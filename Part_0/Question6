@@ -1,0 +1,13 @@
+title Question 6
+
+note over browser:
+browser get inputs and executes the event handler
+that send the user input to the server
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_notes as JSON-data
+server-->browser: HTTP status code 201 Created
+
+note over browser:
+browser uses the JavaScript code to fetched from the server
+end note
