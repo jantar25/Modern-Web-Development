@@ -1,4 +1,14 @@
 
+const Part = ({part,exercises}) => {
+  return (
+    <div>
+        <p>
+          {part} {exercises}
+        </p>
+    </div>
+  )
+} 
+
 const Header = ({course}) => {
   return (
     <div>
@@ -10,15 +20,9 @@ const Header = ({course}) => {
 const Content = ({part,exercises}) => {
   return (
     <div>
-      <p>
-        {part[0]} {exercises[0]}
-      </p>
-      <p>
-        {part[1]} {exercises[1]}
-      </p>
-      <p>
-        {part[2]} {exercises[2]}
-      </p>
+      <Part part={part[0]} exercises={exercises[0]} />
+      <Part part={part[1]} exercises={exercises[1]} />
+      <Part part={part[2]} exercises={exercises[2]} />
     </div>
   )
 }
