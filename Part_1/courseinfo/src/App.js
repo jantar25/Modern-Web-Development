@@ -1,4 +1,3 @@
-
 const Part = ({part}) => {
   return (
     <div>
