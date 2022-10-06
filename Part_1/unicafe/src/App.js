@@ -3,7 +3,14 @@ import { useState } from 'react'
   
 const Button = ({handleClick,text}) =><button onClick={handleClick}>{text}</button>
 
-const StatisticLine  = ({value,text,sign}) =><div>{text} {value} {sign}</div>
+const StatisticLine  = ({value,text,sign}) =>{
+  return (  
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+      <td>{sign}</td>
+    </tr>)
+}
 
 const Statistics = ({allClicks,good,neutral,bad}) => {
   if (allClicks.length === 0) {
@@ -15,12 +22,16 @@ const Statistics = ({allClicks,good,neutral,bad}) => {
   }
   return (
     <div>
-        <StatisticLine  value={good} text='good' sign='' />
-        <StatisticLine  value={neutral} text='neutral' sign='' />
-        <StatisticLine  value={bad} text='bad' sign='' />
-        <StatisticLine  value={allClicks.length} text='all' sign='' />
-        <StatisticLine  value={(good*1+neutral*0+bad*-1)/(allClicks.length)} text='average' sign='' />
-        <StatisticLine  value={(good/(allClicks.length))*100} text='positive' sign='%' /> 
+      <table>
+        <tbody>
+          <StatisticLine  value={good} text='good' sign='' />
+          <StatisticLine  value={neutral} text='neutral' sign='' />
+          <StatisticLine  value={bad} text='bad' sign='' />
+          <StatisticLine  value={allClicks.length} text='all' sign='' />
+          <StatisticLine  value={(good*1+neutral*0+bad*-1)/(allClicks.length)} text='average' sign='' />
+          <StatisticLine  value={(good/(allClicks.length))*100} text='positive' sign='%' /> 
+        </tbody>
+      </table>
     </div>
   )
 }
