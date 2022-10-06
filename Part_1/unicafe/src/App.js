@@ -3,7 +3,7 @@ import { useState } from 'react'
   
 const Button = ({handleClick,text}) =><button onClick={handleClick}>{text}</button>
 
-const Stat = ({stats,text,sign}) =><div>{text} {stats} {sign}</div>
+const StatisticLine  = ({value,text,sign}) =><div>{text} {value} {sign}</div>
 
 const Statistics = ({allClicks,good,neutral,bad}) => {
   if (allClicks.length === 0) {
@@ -15,12 +15,12 @@ const Statistics = ({allClicks,good,neutral,bad}) => {
   }
   return (
     <div>
-        <Stat stats={good} text='good' sign='' />
-        <Stat stats={neutral} text='neutral' sign='' />
-        <Stat stats={bad} text='bad' sign='' />
-        <Stat stats={allClicks.length} text='all' sign='' />
-        <Stat stats={(good*1+neutral*0+bad*-1)/(allClicks.length)} text='average' sign='' />
-        <Stat stats={(good/(allClicks.length))*100} text='positive' sign='%' /> 
+        <StatisticLine  value={good} text='good' sign='' />
+        <StatisticLine  value={neutral} text='neutral' sign='' />
+        <StatisticLine  value={bad} text='bad' sign='' />
+        <StatisticLine  value={allClicks.length} text='all' sign='' />
+        <StatisticLine  value={(good*1+neutral*0+bad*-1)/(allClicks.length)} text='average' sign='' />
+        <StatisticLine  value={(good/(allClicks.length))*100} text='positive' sign='%' /> 
     </div>
   )
 }
