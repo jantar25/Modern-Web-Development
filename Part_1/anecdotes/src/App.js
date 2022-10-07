@@ -12,6 +12,13 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(new Array(7).fill(0))
+
+  const handleVote = () => {
+    const copyVotes = [...votes]
+    copyVotes[selected] += 1
+    setVotes(copyVotes) 
+  }
 
   const toggleAnectode = () => {
     setSelected(Math.floor(Math.random() * 7)) 
@@ -22,6 +29,10 @@ const App = () => {
       <div>
         {anecdotes[selected]}
       </div>
+      <div>
+        has {votes[selected]} votes
+      </div>
+      <button onClick={handleVote} >vote</button>
       <button onClick={toggleAnectode} >next anecdote</button>
     </div>
   )
