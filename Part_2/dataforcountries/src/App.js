@@ -19,6 +19,7 @@ const App = () => {
   const handleSearchChange = (e) => {
     setFilter(e.target.value)
   }
+
   
   const filterCountries = countries
     .filter(country => 
@@ -39,7 +40,10 @@ const App = () => {
         filterCountries.length === 1?
           <CountryDetails country={filterCountries[0]} />  :
         filterCountries.map((country) =>
-          <Country key={country.name?.official} country={country} />)
+          <Country 
+            key={country.name?.official} 
+            country={country}
+            />)
         }
     </div>
   )
