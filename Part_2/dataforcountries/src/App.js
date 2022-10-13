@@ -2,6 +2,7 @@ import React,{ useState, useEffect } from 'react'
 import axios from 'axios'
 import Filter from './component/Filter'
 import Country from './component/Country'
+import CountryDetails from './component/CountryDetails'
 
 const App = () => {
   const [countries, setCountries] = useState([])
@@ -18,6 +19,14 @@ const App = () => {
   const handleSearchChange = (e) => {
     setFilter(e.target.value)
   }
+  
+  const filterCountries = countries
+    .filter(country => 
+      country
+      .name
+      .official
+      .toLowerCase()
+      .includes(filter.toLowerCase()))
 
   return (
     <div>
@@ -25,11 +34,13 @@ const App = () => {
         filter={filter} 
         handleSearchChange={handleSearchChange} 
         />
-        {countries.filter(country => 
-        country.name.official.toLowerCase().includes(filter.toLowerCase())
-        ).map((country) =>
-        <Country key={country.name.official} country={country} />
-        )}
+        {filterCountries.length>10?
+          <div>Too many matches,specify another filter.</div> : 
+        filterCountries.length === 1?
+          <CountryDetails country={filterCountries[0]} />  :
+        filterCountries.map((country) =>
+          <Country key={country.name?.official} country={country} />)
+        }
     </div>
   )
 }
