@@ -23,6 +23,7 @@ const App = () => {
   const addPerson = (e) => {
     e.preventDefault()
     const existingPerson = persons.find((person)=> person.name.toLowerCase() === newName.toLowerCase())
+    
     if (existingPerson) {
       alert(`${newName} is already added to phonebook`)
     } else {
@@ -36,6 +37,23 @@ const App = () => {
         setPersons(persons.concat(res))
         setNewName('')
         setNewNumber('')
+      })
+    }
+  }
+
+  const handleDeletePerson = (person) => {
+    if (window.confirm(`Delete ${person.name}?`)) {
+    personServices
+    .deletePerson(person.id)
+    .then(res => {
+      setPersons(persons.filter(p => p.id !== person.id))
+    })
+    .catch(error => {
+      alert(
+        `the persone ${person.name} was already deleted from server`
+      )
+      console.log(error)
+      setPersons(persons.filter(n => n.id !== person.id))
       })
     }
   }
@@ -70,7 +88,8 @@ const App = () => {
       <h2>Numbers</h2>
       <Persons 
         persons={persons}
-        filter={filter} 
+        filter={filter}
+        handleDeletePerson={handleDeletePerson} 
       />
     </div>
   )
