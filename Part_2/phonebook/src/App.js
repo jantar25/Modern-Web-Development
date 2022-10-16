@@ -20,12 +20,26 @@ const App = () => {
     })
   },[])
 
+
   const addPerson = (e) => {
     e.preventDefault()
     const existingPerson = persons.find((person)=> person.name.toLowerCase() === newName.toLowerCase())
-    
     if (existingPerson) {
-      alert(`${newName} is already added to phonebook`)
+      const updatedPerson = {...existingPerson, number:newNumber}
+      window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`) && (
+        personServices
+        .updatePerson(existingPerson.id,updatedPerson)
+        .then(returnedPerson => {
+          setPersons(persons.map(p => p.id !== existingPerson.id ? p : returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
+        .catch(error => {
+          alert(`${existingPerson.name}'s new number ${newNumber} replacement failed`)
+          console.log(error)
+          })
+      )
+    
     } else {
       const personObject = {
         name: newName,
@@ -38,8 +52,13 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
+      .catch(error => {
+        alert(`the persone ${newName} addition failed`)
+        console.log(error)
+        })
     }
   }
+
 
   const handleDeletePerson = (person) => {
     if (window.confirm(`Delete ${person.name}?`)) {
@@ -49,14 +68,13 @@ const App = () => {
       setPersons(persons.filter(p => p.id !== person.id))
     })
     .catch(error => {
-      alert(
-        `the persone ${person.name} was already deleted from server`
-      )
+      alert(`the persone ${person.name} was already deleted from server`)
       console.log(error)
       setPersons(persons.filter(n => n.id !== person.id))
       })
     }
   }
+
 
   const handleNameChange = (e) => {
     setNewName(e.target.value)
