@@ -55,15 +55,25 @@ let persons = [
   app.post('/api/persons', (request, response) => {
     const id = Math.floor(Math.random() * 1000)
     const body = request.body
-    const person = {
-      id: id,
-      name: body.name,
-      number: body.number
+    const existingName = persons.find(person => person.name === body.name)
+    if (!body.name || !body.number) {
+      return response.status(400).json({ 
+        error: 'content missing' 
+      })
+    } else if (existingName) {
+      return response.status(400).json({ 
+        error: 'name must be unique'
+       })
+    } else {
+      const person = {
+        id: id,
+        name: body.name,
+        number: body.number
+      }
+    
+      persons = persons.concat(person)
+      response.json(person)
     }
-  
-    persons = persons.concat(person)
-  
-    response.json(person)
   })
   
   const PORT = 3001
