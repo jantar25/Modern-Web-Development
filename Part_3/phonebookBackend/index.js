@@ -25,7 +25,7 @@ let persons = [
     }
 ]
 
-  
+ 
   app.get('/info', (request, response) => {
     response.send(`Phonebook has info for ${persons.length} people ${new Date()}`)
   })
@@ -50,6 +50,20 @@ let persons = [
     persons = persons.filter(person => person.id !== id)
 
     response.status(204).end()
+  })
+
+  app.post('/api/persons', (request, response) => {
+    const id = Math.floor(Math.random() * 1000)
+    const body = request.body
+    const person = {
+      id: id,
+      name: body.name,
+      number: body.number
+    }
+  
+    persons = persons.concat(person)
+  
+    response.json(person)
   })
   
   const PORT = 3001
