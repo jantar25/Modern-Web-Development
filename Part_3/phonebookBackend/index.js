@@ -1,6 +1,9 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
+
 app.use(express.json())
+app.use(morgan('tiny'))
 
 let persons = [
     { 
@@ -25,15 +28,18 @@ let persons = [
     }
 ]
 
- 
+
+//GET INFORMATION
   app.get('/info', (request, response) => {
     response.send(`Phonebook has info for ${persons.length} people ${new Date()}`)
   })
   
+//GET ALL PERSONS
   app.get('/api/persons', (request, response) => {
     response.json(persons)
   })
 
+//GET ONE PERSON BY ID
   app.get('/api/persons/:id',(request,response) => {
     const id = Number(request.params.id)
     const person = persons.find(person => person.id === id)
@@ -45,6 +51,7 @@ let persons = [
     }
   })
 
+//DELETE ONE PERSON BY ID
   app.delete('/api/persons/:id', (request,response) => {
     const id = Number(request.params.id)
     persons = persons.filter(person => person.id !== id)
@@ -52,6 +59,7 @@ let persons = [
     response.status(204).end()
   })
 
+//CREATE ONE PERSON
   app.post('/api/persons', (request, response) => {
     const id = Math.floor(Math.random() * 1000)
     const body = request.body
