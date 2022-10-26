@@ -7,9 +7,9 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:ui": "rm -rf build && cd ../../Part_2/phonebook && npm run build && cp -r build ../../Part_3/phonebookBackend",
+    "build:ui": "rd /s /q build && cd ../../Part_2/phonebook && npm run build && xcopy /build ../../Part_3/phonebookBackend",
     "deploy": "flyctl deploy",
-    "deploy:full": "npm run build:ui && npm run deploy",    
+    "deploy:full": "npm run build:ui && npm run deploy",
     "logs:prod": "flyctl logs"
   },
   "author": "",
@@ -17,6 +17,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "mongoose": "^6.7.0",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
