@@ -67,6 +67,9 @@ const App = () => {
       })
       .catch(error => {
         setErrorMessage(`the persone ${newName} addition failed`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
         console.log(error)
         })
     }

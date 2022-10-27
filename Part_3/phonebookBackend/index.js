@@ -62,14 +62,11 @@ app.use(errorHandler)
 //CREATE ONE PERSON
   app.post('/api/persons', (request, response) => {
     const body = request.body
-    const existingName = Person.findOne({name:body.name})
-    console.log(existingName.select)
+
     if (!body.name || !body.number) {
       return response.status(400).json({ 
         error: 'content missing' 
       })
-    } else if (existingName) {
-      return response.status(400).json({ error: 'name must be unique'})
     } else {
       const person = new Person({
         name: body.name,
@@ -82,6 +79,21 @@ app.use(errorHandler)
       })   
     }
   })
+
+  //UPDATE EXISTING PERSON
+  app.put('/api/persons/:id', (request, response, next) => {
+    const body = request.body
+  
+    const person = {
+      number: body.number,
+    }
+    Person.findByIdAndUpdate(request.params.id, person, { new: true })
+      .then(updatedPerson => {
+        response.json(updatedPerson)
+      })
+      .catch(error => next(error))
+  })
+  
   
   const PORT = process.env.PORT
   app.listen(PORT, () => {
