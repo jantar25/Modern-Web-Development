@@ -25,7 +25,9 @@ app.use(errorHandler)
 
 //GET INFORMATION
   app.get('/info', (request, response) => {
-    response.send(`Phonebook has info for people `)
+    Person.find({}).then(persons => {
+      response.send(`Phonebook has info for ${persons.length} people <br> ${new Date()}`)
+    })
   })
   
 //GET ALL PERSONS
@@ -61,18 +63,14 @@ app.use(errorHandler)
   app.post('/api/persons', (request, response) => {
     const body = request.body
     const existingName = Person.findOne({name:body.name})
-    console.log(existingName)
+    console.log(existingName.select)
     if (!body.name || !body.number) {
       return response.status(400).json({ 
         error: 'content missing' 
       })
-    }
-    // else if (existingName) {
-    //   return response.status(400).json({ 
-    //     error: 'name must be unique'
-    //    })
-    // } 
-    else {
+    } else if (existingName) {
+      return response.status(400).json({ error: 'name must be unique'})
+    } else {
       const person = new Person({
         name: body.name,
         number: body.number,
