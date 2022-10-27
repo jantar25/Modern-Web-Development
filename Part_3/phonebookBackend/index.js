@@ -29,22 +29,27 @@ app.use(express.static('build'))
 
 //GET ONE PERSON BY ID
   app.get('/api/persons/:id',(request,response) => {
-    const id = Number(request.params.id)
-    const person = Person.find(person => person.id === id)
-  
+    Person.findById(request.params.id)
+    .then(person => { 
     if (person) {
       response.json(person)
     } else {
-      response.status(404).end('Not found')
+      response.status(404).end()
     }
+  })
+  .catch(error => {
+    console.log(error)
+    response.status(500).end({ error: 'malformatted id' })
+    })
   })
 
 //DELETE ONE PERSON BY ID
   app.delete('/api/persons/:id', (request,response) => {
-    const id = Number(request.params.id)
-    persons = persons.filter(person => person.id !== id)
-
-    response.status(204).end()
+    Person.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => console.log(error))
   })
 
 //CREATE ONE PERSON
