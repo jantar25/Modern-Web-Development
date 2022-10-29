@@ -41,7 +41,7 @@ const App = () => {
           }, 5000)
         })
         .catch(error => {
-          setErrorMessage(`the information of ${existingPerson.name} has already been removed from server`)
+          setErrorMessage(error.response.data.error)
           setTimeout(() => {
             setErrorMessage(null)
           }, 5000)
@@ -66,7 +66,7 @@ const App = () => {
         }, 5000)
       })
       .catch(error => {
-        setErrorMessage(`the persone ${newName} addition failed`)
+        setErrorMessage(error.response.data.error)
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)

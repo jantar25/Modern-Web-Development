@@ -7,11 +7,11 @@ const PersonForm = (props) => {
     <div>
       <div>
         <label>name: </label>
-        <input value={newName} required onChange={handleNameChange} />
+        <input value={newName} onChange={handleNameChange} />
       </div>
       <div>
         <label>number: </label>
-        <input value={newNumber} required onChange={handleNumberChange} />
+        <input value={newNumber} onChange={handleNumberChange} />
     </div>
     </div>
     <div>

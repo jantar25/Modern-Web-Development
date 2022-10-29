@@ -2,7 +2,6 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
-
 const Person = require('./models/persons')
 const app = express()
 
@@ -10,17 +9,18 @@ const app = express()
 app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
+// app.use(function(error, request, response, next){
+//   console.error(error)
+//   if (error.name === 'CastError') {
+//     return response.status(400).send({ error: 'malformatted id' })
+//   } else if (error.name === 'ValidationError') {
+//     return response.status(400).json({ error: error.message })
+//   }
+//   next(error)
+// })
 morgan.token('body', (req, res) => JSON.stringify(req.body));
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body '))
 
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
-  } 
-  next(error)
-  }
-app.use(errorHandler)
 
 
 //GET INFORMATION
@@ -51,7 +51,7 @@ app.use(errorHandler)
   })
 
 //DELETE ONE PERSON BY ID
-  app.delete('/api/persons/:id', (request,response,next) => {
+  app.delete('/api/persons/:id', (request, response, next) => {
     Person.findByIdAndRemove(request.params.id)
     .then(result => {
       response.status(204).end()
@@ -60,7 +60,7 @@ app.use(errorHandler)
   })
 
 //CREATE ONE PERSON
-  app.post('/api/persons', (request, response) => {
+  app.post('/api/persons', (request, response, next) => {
     const body = request.body
 
     if (!body.name || !body.number) {
@@ -74,9 +74,11 @@ app.use(errorHandler)
         date: new Date(),
       })
     
-      person.save().then(savedPerson =>{
+      person.save()
+      .then(savedPerson =>{
         response.json(savedPerson)
-      })   
+      })
+      .catch(error => next(error))
     }
   })
 
@@ -94,6 +96,22 @@ app.use(errorHandler)
       .catch(error => next(error))
   })
   
+  const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+  }
+  app.use(unknownEndpoint)
+  
+  const errorHandler = (error, request, response, next) => {
+    console.error(error.message)
+  
+    if (error.name === 'CastError') {
+      return response.status(400).send({ error: 'malformatted id' })
+    } else if (error.name === 'ValidationError') {
+      return response.status(400).json({ error: error.message })
+    }
+    next(error)
+  }
+  app.use(errorHandler)
   
   const PORT = process.env.PORT
   app.listen(PORT, () => {
