@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
 
 const url = process.env.MONGODB_URI
+const numberValidator = (v) => {
+  return /\d{2,3}-\d{6}/.test(v);
+}
 
 mongoose
 .connect(url)
@@ -16,7 +19,14 @@ mongoose
       type: String,
       minLength: 3,
     }, 
-    number: String,
+    number: {
+      type: String,
+      minLength: 8,
+      validate: {
+        validator: numberValidator,
+        message: props => `${props.value} is not a valid phone number!`
+      },
+    },
     date: Date,
   })
   
