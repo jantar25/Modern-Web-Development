@@ -12,36 +12,36 @@ const number = process.argv[4]
 const url = `mongodb+srv://Jantar:${password}@cluster0.mrzquim.mongodb.net/Phonebook?retryWrites=true&w=majority`
 
 const personSchema = new mongoose.Schema({
-    name: String, 
-    number: String,
-    date: Date,
+  name: String,
+  number: String,
+  date: Date,
 })
 
 const Person = mongoose.model('Person', personSchema)
 
 mongoose
   .connect(url)
-  .then((result) => {
+  .then(() => {
     console.log('connected to MongoDB')
 
     if(!name || !number) {
-        Person.find({}).then(result => {
-            console.log('phonebook:')
-            result.forEach(person => {
-              console.log(`${person.name} ${person.number}`)
-            })
-            mongoose.connection.close()
-          })
-    } else {
-        const person = new Person({
-            name: name,
-            number: number,
-            date: new Date(),
+      Person.find({}).then(result => {
+        console.log('phonebook:')
+        result.forEach(person => {
+          console.log(`${person.name} ${person.number}`)
         })
-        return person.save().then(() => {
-            console.log(`Added ${name} number ${number} to phonebook`)
-            return mongoose.connection.close()
-          })   
+        mongoose.connection.close()
+      })
+    } else {
+      const person = new Person({
+        name: name,
+        number: number,
+        date: new Date(),
+      })
+      return person.save().then(() => {
+        console.log(`Added ${name} number ${number} to phonebook`)
+        return mongoose.connection.close()
+      })
     }
   })
   .catch((err) => console.log(err))
