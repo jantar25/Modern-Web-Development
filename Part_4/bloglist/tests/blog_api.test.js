@@ -2,19 +2,18 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const Blogs = require('../models/blogs')
-const { initialBlogs,blogInDb } = require('../utils/list_helper')
+const { initialBlogs,blogInDb,missingLike } = require('../utils/list_helper')
 
 const api = supertest(app)
 
-
-
 beforeEach(async () => {
   await Blogs.deleteMany({})
-  let blogObject = new Blogs(initialBlogs[0])
-  await blogObject.save()
-  blogObject = new Blogs(initialBlogs[1])
-  await blogObject.save()
+  for (let blog of initialBlogs) {
+    let blogObject = new Blogs(blog)
+    await blogObject.save()
+  }
 },100000)
+
 
 
 test('blogs are returned as json', async () => {
@@ -25,7 +24,7 @@ test('blogs are returned as json', async () => {
 })
 
 
-test('all notes are returned', async () => {
+test('all blogs are returned', async () => {
   const response = await api.get('/api/blogs')
   expect(response.body).toHaveLength(initialBlogs.length)
 })
@@ -36,7 +35,7 @@ test('verifies unique identifier of blog posts is named id', async () => {
   expect(contents[0]).toBeDefined()
 })
 
-test('a valid note can be added ', async () => {
+test('a valid blog can be added ', async () => {
   const newBlog = {
     title: 'Hashlem Whitchwes',
     author: 'Ed W. Doe',
@@ -57,6 +56,29 @@ test('a valid note can be added ', async () => {
   expect(contents).toContain(
     'Hashlem Whitchwes'
   )
+})
+
+test('missing blog likes return 0 value', () => {
+  const blog = {
+    title: 'Pinchards',
+    author: 'Ed W. Doe',
+    url: 'http://www.u.arizona.edu/~rubinson/Pinchards',
+  }
+  expect(missingLike(blog)).toBe(0)
+})
+
+test('blog without content is not added', async () => {
+  const blog = {
+    url: 'http://www.u.arizona.edu/~rubinson/Pinchards',
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(blog)
+    .expect(400)
+
+  const notesAtEnd = await blogInDb()
+  expect(notesAtEnd).toHaveLength(initialBlogs.length)
 })
 
 afterAll(() => {

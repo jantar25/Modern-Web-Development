@@ -35,10 +35,15 @@ const blogInDb = async () => {
   return blogs.map(blog => blog.toJSON())
 }
 
+const missingLike = (blog) => {
+  return blog.likes? blog : 0
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   blogInDb,
-  initialBlogs
+  initialBlogs,
+  missingLike
 }
