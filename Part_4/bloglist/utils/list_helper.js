@@ -1,3 +1,20 @@
+const Blogs = require('../models/blogs')
+
+const initialBlogs = [
+  {
+    title: 'Harmful Statement ',
+    author: 'Donna T. Dekojack',
+    url: 'https://fullstackopen.com/en/part4/testing_the_backend#test-environment',
+    likes: 15,
+  },
+  {
+    title: 'Go To Statement Considered Harmful',
+    author: 'Edsger W. Dijkstra',
+    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+    likes: 5,
+  }
+]
+
 const dummy = (blogs) => {
   console.log(blogs)
   return 1
@@ -13,8 +30,15 @@ const favoriteBlog = (blogs) => {
   return favorite
 }
 
+const blogInDb = async () => {
+  const blogs = await Blogs.find({})
+  return blogs.map(blog => blog.toJSON())
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
+  blogInDb,
+  initialBlogs
 }
