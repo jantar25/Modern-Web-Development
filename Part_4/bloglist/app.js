@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const { MONGODB_URI } = require('./utils/config')
 const logger = require('./utils/logger')
 const blogsRouter = require('./controllers/blogs')
+const usersRouter = require('./controllers/user')
 const middleware = require('./utils/middleware')
 
 mongoose.connect(MONGODB_URI)
@@ -21,6 +22,7 @@ app.use(middleware.requestLogger)
 app.use(middleware.morganMiddleware(':method :url :status :res[content-length] - :response-time ms :body '))
 
 app.use('/api/blogs',blogsRouter)
+app.use('/api/users', usersRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
