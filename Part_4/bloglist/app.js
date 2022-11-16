@@ -1,5 +1,4 @@
 const express = require('express')
-const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
 const { MONGODB_URI } = require('./utils/config')
@@ -7,6 +6,7 @@ const logger = require('./utils/logger')
 const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/user')
 const middleware = require('./utils/middleware')
+const app = express()
 
 mongoose.connect(MONGODB_URI)
   .then(() => {
