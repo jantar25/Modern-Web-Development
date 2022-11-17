@@ -2,7 +2,7 @@ const blogsRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const Blog = require('../models/blogs')
 const User = require('../models/user')
-const { getTokenFrom } = require('../utils/list_helper')
+
 
 
 //GET ALL BLOGS
@@ -14,8 +14,8 @@ blogsRouter.get('/', async (request, response) => {
 //ADD ONE BLOG
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
-  const token = getTokenFrom(request)
-  const decodedToken = jwt.verify(token, process.env.SECRET,{ expiresIn: 60*60 })
+  const token = request.token
+  const decodedToken = jwt.verify(token, process.env.SECRET)
   if (!body.title || !body.author) {
     return response.status(400).json({
       error: 'content missing'
