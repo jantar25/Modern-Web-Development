@@ -39,11 +39,20 @@ const missingLike = (blog) => {
   return blog.likes? blog : 0
 }
 
+const getTokenFrom = (request) => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7)
+  }
+  return null
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   blogInDb,
   initialBlogs,
-  missingLike
+  missingLike,
+  getTokenFrom
 }
