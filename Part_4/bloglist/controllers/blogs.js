@@ -14,14 +14,13 @@ blogsRouter.get('/', async (request, response) => {
 //ADD ONE BLOG
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
-  const token = request.token
-  const decodedToken = jwt.verify(token, process.env.SECRET)
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
   if (!body.title || !body.author) {
     return response.status(400).json({
       error: 'content missing'
     })
   } else {
-    if ( !token || !decodedToken.id) {
+    if (!decodedToken.id) {
       return response.status(401).json({ error: 'token missing or invalid' })
     } else {
       const user = await User.findById(decodedToken.id)
@@ -43,8 +42,14 @@ blogsRouter.post('/', async (request, response) => {
 
 //DELETE ONE BLOG BY ID
 blogsRouter.delete('/:id', async (request, response) => {
-  await Blog.findByIdAndRemove(request.params.id)
-  response.status(204).end()
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  const blogToDelete = await Blog.findById(request.params.id)
+  if ( blogToDelete.user.toString() !== decodedToken.id.toString()) {
+    response.status(401).json({ error: 'You are no allowed to do that' })
+  } else {
+    await Blog.findByIdAndRemove(request.params.id)
+    response.status(204).end()
+  }
 })
 
 //UPDATE EXISTING BLOG
