@@ -7,7 +7,8 @@ require('express-async-errors')
 const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/user')
 const loginRouter = require('./controllers/login')
-const middleware = require('./utils/middleware')
+const { requestLogger,morganMiddleware,tokenExtractor,
+  userExtractor,unknownEndpoint,errorHandler } = require('./utils/middleware')
 const app = express()
 
 
@@ -22,15 +23,16 @@ mongoose.connect(MONGODB_URI)
 
 app.use(cors())
 app.use(express.json())
-app.use(middleware.requestLogger)
-app.use(middleware.morganMiddleware(':method :url :status :res[content-length] - :response-time ms :body '))
-app.use(middleware.tokenExtractor)
+app.use(requestLogger)
+app.use(morganMiddleware(':method :url :status :res[content-length] - :response-time ms :body '))
+app.use(tokenExtractor)
 
-app.use('/api/blogs', blogsRouter)
+
+app.use('/api/blogs',userExtractor, blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 
-app.use(middleware.unknownEndpoint)
-app.use(middleware.errorHandler)
+app.use(unknownEndpoint)
+app.use(errorHandler)
 
 module.exports = app
