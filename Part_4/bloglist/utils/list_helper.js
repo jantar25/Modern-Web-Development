@@ -47,6 +47,22 @@ const getTokenFrom = (request) => {
   return null
 }
 
+const mostBlogs = (blogs) => {
+  const authorArray = blogs.map(blog => blog.author)
+  const countedBlogs = authorArray.reduce((autgorBlogs,blog) => {
+    const currentCount = autgorBlogs[blog] ?? 0
+    return {
+      ...autgorBlogs,
+      [blog]: currentCount + 1,
+    }
+  })
+  console.log(countedBlogs)
+}
+
+const mostLikes = (blogs) => {
+  console.log(blogs)
+}
+
 module.exports = {
   dummy,
   totalLikes,
@@ -54,5 +70,7 @@ module.exports = {
   blogInDb,
   initialBlogs,
   missingLike,
-  getTokenFrom
+  getTokenFrom,
+  mostBlogs,
+  mostLikes
 }
