@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const Blogs = require('../models/blogs')
-const { initialBlogs,blogInDb,missingLike,mostBlogs,mostLikes } = require('../utils/list_helper')
+const { initialBlogs,blogInDb,missingLike,mostBlogs,mostLikes,userInDb } = require('../utils/list_helper')
 
 const api = supertest(app)
 
@@ -36,7 +36,51 @@ describe('when there is initially some blogs saved', () => {
   })
 })
 
+describe('registor a new user', () => {
+  test('registor one user', async () => {
+    const newUser = {
+      username: 'Jantar',
+      name: 'Glody',
+      password: '12345',
+    }
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const userAtEnd = await userInDb()
+    expect(userAtEnd).toHaveLength(1)
+
+    const contents = userAtEnd.map(user => user.name)
+    expect(contents).toContain(
+      'Glody'
+    )
+  })
+})
+
 describe('addition of a new blog', () => {
+  test('A valid content blog can not be added it token not provided', async () => {
+    const newBlog = {
+      title: 'Hashlem Whitchwes',
+      author: 'Ed W. Doe',
+      url: 'http://www.u.arizona.edu/~rubinson/hashlemWhitches',
+      likes: 8,
+    }
+
+    const TOKEN = ''
+    await api
+      .post('/api/blogs')
+      .set('Authorization', 'bearer ' + TOKEN)
+      .send(newBlog)
+      .expect(401)
+
+
+    const blogsAtEnd = await blogInDb()
+    expect(blogsAtEnd).toHaveLength(initialBlogs.length)
+
+  })
+
   test('A valid content blog can be added ', async () => {
     const newBlog = {
       title: 'Hashlem Whitchwes',
@@ -44,24 +88,25 @@ describe('addition of a new blog', () => {
       url: 'http://www.u.arizona.edu/~rubinson/hashlemWhitches',
       likes: 8,
     }
-    const response = await api.post('/api/login', { username: 'Boss', password: '12345' })
-    const token = response.accessToken
+    const response = await api.post('/api/login').send({ username: 'Jantar', password: '12345' })
+    const TOKEN = response._body.token
     await api
       .post('/api/blogs')
-      .set({ Authorization: token })
+      .set('Authorization', 'bearer ' + TOKEN)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
 
-  //   const blogsAtEnd = await blogInDb()
-  //   expect(blogsAtEnd).toHaveLength(initialBlogs.length + 1)
+    const blogsAtEnd = await blogInDb()
+    expect(blogsAtEnd).toHaveLength(initialBlogs.length + 1)
 
-  //   const contents = blogsAtEnd.map(b => b.title)
-  //   expect(contents).toContain(
-  //     'Hashlem Whitchwes'
-  //   )
-  // })
+    const contents = blogsAtEnd.map(b => b.title)
+    expect(contents).toContain(
+      'Hashlem Whitchwes'
+    )
+  })
+
 
   test('blog without content is not added', async () => {
     const blog = {
@@ -92,9 +137,12 @@ describe('deletion of a blog', () => {
   test('blog deletion with valid id', async () => {
     const blogsAtStart = await blogInDb()
     const blogToDelete = blogsAtStart[0]
+    const response = await api.post('/api/login').send({ username: 'Jantar', password: '12345' })
+    const TOKEN = response._body.token
 
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', 'bearer ' + TOKEN)
       .expect(204)
 
     const blogsAtEnd = await blogInDb()

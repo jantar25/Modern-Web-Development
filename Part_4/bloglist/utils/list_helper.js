@@ -1,4 +1,5 @@
 const Blogs = require('../models/blogs')
+const User = require('../models/user')
 
 const initialBlogs = [
   {
@@ -6,12 +7,14 @@ const initialBlogs = [
     author: 'Donna T. Dekojack',
     url: 'https://fullstackopen.com/en/part4/testing_the_backend#test-environment',
     likes: 15,
+    user: '637ad6f5dada8d08fdc2b507'
   },
   {
     title: 'Go To Statement Considered Harmful',
     author: 'Edsger W. Dijkstra',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
     likes: 5,
+    user: '637ad6f5dada8d08fdc2b507'
   }
 ]
 
@@ -35,6 +38,11 @@ const blogInDb = async () => {
   return blogs.map(blog => blog.toJSON())
 }
 
+const userInDb = async () => {
+  const users = await User.find({})
+  return users.map(blog => blog.toJSON())
+}
+
 const missingLike = (blog) => {
   return blog.likes? blog : 0
 }
@@ -49,14 +57,14 @@ const getTokenFrom = (request) => {
 
 const mostBlogs = (blogs) => {
   const authorArray = blogs.map(blog => blog.author)
-  const countedBlogs = authorArray.reduce((autgorBlogs,blog) => {
-    const currentCount = autgorBlogs[blog] ?? 0
-    return {
-      ...autgorBlogs,
-      [blog]: currentCount + 1,
-    }
-  })
-  console.log(countedBlogs)
+  // const countedBlogs = authorArray.reduce((authorBlogs,blog) => {
+  //   const currentCount = authorBlogs[blog] ?? 0
+  //   return {
+  //     ...authorBlogs,
+  //     [blog]: currentCount + 1,
+  //   }
+  // })
+  console.log(authorArray)
 }
 
 const mostLikes = (blogs) => {
@@ -72,5 +80,6 @@ module.exports = {
   missingLike,
   getTokenFrom,
   mostBlogs,
-  mostLikes
+  mostLikes,
+  userInDb
 }
