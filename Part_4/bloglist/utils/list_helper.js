@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const Blogs = require('../models/blogs')
 const User = require('../models/user')
 
@@ -14,6 +15,13 @@ const initialBlogs = [
     author: 'Edsger W. Dijkstra',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
     likes: 5,
+    user: '637ad6f5dada8d08fdc2b507'
+  },
+  {
+    title: 'Likes author test',
+    author: 'Edsger W. Dijkstra',
+    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/testauthor.html',
+    likes: 15,
     user: '637ad6f5dada8d08fdc2b507'
   }
 ]
@@ -56,15 +64,14 @@ const getTokenFrom = (request) => {
 }
 
 const mostBlogs = (blogs) => {
-  const authorArray = blogs.map(blog => blog.author)
-  // const countedBlogs = authorArray.reduce((authorBlogs,blog) => {
-  //   const currentCount = authorBlogs[blog] ?? 0
-  //   return {
-  //     ...authorBlogs,
-  //     [blog]: currentCount + 1,
-  //   }
-  // })
-  console.log(authorArray)
+  const { countBy, values, maxBy, findKey } = _
+
+  const authorBlogs = countBy(blogs, 'author')
+  const mostBlogs = maxBy(values(authorBlogs))
+  const author = findKey(authorBlogs, (o) => {
+    return o === mostBlogs
+  })
+  return { author: author, blogs: mostBlogs }
 }
 
 const mostLikes = (blogs) => {

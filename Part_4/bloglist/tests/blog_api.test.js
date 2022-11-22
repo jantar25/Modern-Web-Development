@@ -174,8 +174,8 @@ describe('viewing author with most blogs and likes', () => {
   test('viewing author with most blogs',async () => {
     const blogs = await blogInDb()
     expect(mostBlogs(blogs)).toEqual({
-      author: 'Robert C. Martin',
-      blogs: 3
+      author: 'Edsger W. Dijkstra',
+      blogs: 2
     })
   })
 
