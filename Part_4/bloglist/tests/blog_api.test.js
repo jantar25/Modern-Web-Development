@@ -12,7 +12,7 @@ beforeEach(async () => {
     let blogObject = new Blogs(blog)
     await blogObject.save()
   }
-},100000)
+},200000)
 
 
 describe('when there is initially some blogs saved', () => {
@@ -174,7 +174,7 @@ describe('viewing author with most blogs and likes', () => {
   test('viewing author with most blogs',async () => {
     const blogs = await blogInDb()
     expect(mostBlogs(blogs)).toEqual({
-      author: 'Edsger W. Dijkstra',
+      author: 'Donna T. Dekojack',
       blogs: 2
     })
   })
@@ -182,8 +182,8 @@ describe('viewing author with most blogs and likes', () => {
   test('viewing author with most likes',async () => {
     const blogs = await blogInDb()
     expect(mostLikes(blogs)).toEqual({
-      author: 'Edsger W. Dijkstra',
-      likes: 17
+      author: 'Donna T. Dekojack',
+      likes: 20
     })
   })
 })

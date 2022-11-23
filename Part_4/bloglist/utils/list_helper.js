@@ -11,6 +11,13 @@ const initialBlogs = [
     user: '637ad6f5dada8d08fdc2b507'
   },
   {
+    title: 'Harmful next',
+    author: 'Donna T. Dekojack',
+    url: 'https://fullstackopen.com/en/part4/testing_the_backend#test-next',
+    likes: 5,
+    user: '637ad6f5dada8d08fdc2b507'
+  },
+  {
     title: 'Go To Statement Considered Harmful',
     author: 'Edsger W. Dijkstra',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
@@ -71,11 +78,19 @@ const mostBlogs = (blogs) => {
   const author = findKey(authorBlogs, (o) => {
     return o === mostBlogs
   })
+
   return { author: author, blogs: mostBlogs }
 }
 
 const mostLikes = (blogs) => {
-  console.log(blogs)
+  const { maxBy,map,groupBy,mapValues,pick,toPairs,sumBy,zipObject } = _
+  const likesBlogs = blogs.map(blog => pick(blog,['author','likes']))
+  const groupAuthor = groupBy(likesBlogs,'author')
+  const authorLikes = toPairs(mapValues(groupAuthor,arr => sumBy(arr,'likes')))
+  const likesObject = map(authorLikes,values => zipObject(['author', 'likes'], values))
+  const mostLikes = maxBy(likesObject,'likes')
+
+  return mostLikes
 }
 
 module.exports = {
