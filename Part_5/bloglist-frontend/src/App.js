@@ -5,6 +5,7 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import BlogCraeteForm from './components/BlogCraeteForm'
 import LoginForm from './components/LoginForm'
+import Togglable from './components/Togglable'
 
 
 const App = () => {
@@ -18,20 +19,6 @@ const App = () => {
   const [ errorMessage, setErrorMessage ] = useState(null)
   const [ successMessage, setSuccessMessage ] = useState(null)
 
-  useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
-  }, [])
-
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  },[])
 
   const handleLogout = async (e) => {
     e.preventDefault()
@@ -85,6 +72,20 @@ const App = () => {
     }
   }
 
+  useEffect(() => {
+    blogService.getAll().then(blogs =>
+      setBlogs( blogs )
+    )  
+  }, [])
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  },[])
 
   if (user === null) {
     return (
@@ -116,15 +117,17 @@ const App = () => {
         <button onClick={handleLogout}>logout</button>
       </div>
       <br />
-      <BlogCraeteForm 
-          handleCreate = {handleCreate}
-          title = {title}
-          author = {author}
-          url = {url}
-          handleTitleChange = {(e) => setTitle(e.target.value)}
-          handleAuthorChange = {(e) => setAuthor(e.target.value)}
-          handleUrlChange = {(e) => setUrl(e.target.value)}
-      />
+      <Togglable buttonLabel='login'>
+        <BlogCraeteForm 
+            handleCreate = {handleCreate}
+            title = {title}
+            author = {author}
+            url = {url}
+            handleTitleChange = {(e) => setTitle(e.target.value)}
+            handleAuthorChange = {(e) => setAuthor(e.target.value)}
+            handleUrlChange = {(e) => setUrl(e.target.value)}
+        />
+      </Togglable>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
