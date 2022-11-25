@@ -15,30 +15,8 @@ const App = () => {
   const [ successMessage, setSuccessMessage ] = useState(null)
   const blogFormRef = useRef()
 
-  const handleLogout = async (e) => {
-    e.preventDefault()
-    window.localStorage.clear()
-    setUser(null)
-  }
 
-  const handleCreate = async (blogObject) => {
-    blogFormRef.current.toggleVisibility()
-    try {
-      const blog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(blog))
-      setSuccessMessage(`A new blog ${blog.title} by ${blog.author} added`)
-      setTimeout(() => {
-        setSuccessMessage(null)
-      }, 5000)
-    } catch (error) {
-      setErrorMessage(error.response.data.error)
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
-      console.log(error)
-    }
-  }
-
+//LOGIN
   const handleLogin = async (userObject) => {
     try {
       const user = await loginService.login(userObject)
@@ -57,6 +35,53 @@ const App = () => {
     }
   }
 
+  
+  //LOG OUT
+  const handleLogout = async (e) => {
+    e.preventDefault()
+    window.localStorage.clear()
+    setUser(null)
+  }
+
+    //ADD BLOG
+    const handleCreate = async (blogObject) => {
+      blogFormRef.current.toggleVisibility()
+      try {
+        const blog = await blogService.create(blogObject)
+        setBlogs(blogs.concat(blog))
+        setSuccessMessage(`A new blog ${blog.title} by ${blog.author} added`)
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 5000)
+      } catch (error) {
+        setErrorMessage(error.response.data.error)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+        console.log(error)
+      }
+    }
+
+    //DELETE A BLOG
+    const handleDelete = async (blog) => {
+      if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+        try {
+          await blogService.deleteBlog(blog.id)
+          setBlogs(blogs.filter(b => b.id !== blog.id))
+          setSuccessMessage(`Deleted Successfully`)
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
+        } catch (error) {
+          setErrorMessage(error.response.data.error)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+          console.log(error)
+        }
+      }
+    }
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
@@ -71,7 +96,7 @@ const App = () => {
       blogService.setToken(user.token)
     }
   },[])
-console.log(blogs)
+
   if (user === null) {
     return (
       <div>
@@ -100,7 +125,12 @@ console.log(blogs)
         <BlogCraeteForm createBlog = {handleCreate} />
       </Togglable>
       {blogs.map((blog) => 
-          <Blog key={blog.id} blog={blog} />
+          <Blog 
+          key={blog.id} 
+          blog={blog} 
+          handleDelete={handleDelete} 
+          user={user.username}
+          />
         )}
   </div>
   )
