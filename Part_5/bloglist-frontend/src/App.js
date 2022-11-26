@@ -82,6 +82,27 @@ const App = () => {
       }
     }
 
+    //UPDATE BLOG
+    const handleUpdate = async (blog) => {
+      const blogToUpdate = {
+        user:blog.user.id, 
+        likes:blog.likes + 1,
+        title:blog.title,
+        author:blog.author,
+        url:blog.url
+      }
+      try {
+        const updatedBlog = await blogService.updateBlog(blog.id,blogToUpdate)
+        setBlogs(blogs.map(b => b.id !== blog.id ? b : {...b,likes:updatedBlog.data.likes}))
+      } catch (error) {
+        setErrorMessage(error.response.data.error)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+        console.log(error)
+      }
+    }
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
@@ -96,6 +117,7 @@ const App = () => {
       blogService.setToken(user.token)
     }
   },[])
+
 
   if (user === null) {
     return (
@@ -124,11 +146,14 @@ const App = () => {
       <Togglable buttonLabel='create new blog' ref={blogFormRef}>
         <BlogCraeteForm createBlog = {handleCreate} />
       </Togglable>
-      {blogs.map((blog) => 
+      {blogs
+      .sort((a, b) => b.likes - a.likes)
+      .map((blog) => 
           <Blog 
           key={blog.id} 
           blog={blog} 
-          handleDelete={handleDelete} 
+          handleDelete={handleDelete}
+          handleUpdate={handleUpdate} 
           user={user.username}
           />
         )}
