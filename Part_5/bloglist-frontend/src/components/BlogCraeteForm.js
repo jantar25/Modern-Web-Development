@@ -7,7 +7,7 @@ const BlogCraeteForm = ({ createBlog }) => {
 
   const handleCreate = (e) => {
     e.preventDefault()
-    createBlog({title,author,url})
+    createBlog({ title,author,url })
 
     setTitle('')
     setAuthor('')
@@ -16,38 +16,38 @@ const BlogCraeteForm = ({ createBlog }) => {
 
   return (
     <div>
-    <h2>Create new</h2>
-    <form onSubmit={handleCreate}>
-      <div>
-        <label>tittle</label>
-        <input
-          type="text"
-          value={title}
-          name="title"
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>author</label>
-        <input
-          type="text"
-          value={author}
-          name="author"
-          onChange={(e) => setAuthor(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>url</label>
-        <input
-          type="text"
-          value={url}
-          name="url"
-          onChange={(e) => setUrl(e.target.value)}
-        />
-      </div>
-      <button type="submit">Create</button>
-    </form>
-  </div>
+      <h2>Create new</h2>
+      <form onSubmit={handleCreate}>
+        <div>
+          <label>tittle</label>
+          <input
+            type="text"
+            value={title}
+            name="title"
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>author</label>
+          <input
+            type="text"
+            value={author}
+            name="author"
+            onChange={(e) => setAuthor(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>url</label>
+          <input
+            type="text"
+            value={url}
+            name="url"
+            onChange={(e) => setUrl(e.target.value)}
+          />
+        </div>
+        <button type="submit">Create</button>
+      </form>
+    </div>
   )
 }
 

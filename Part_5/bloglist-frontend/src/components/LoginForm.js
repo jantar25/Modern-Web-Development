@@ -1,7 +1,7 @@
 import React,{ useState } from 'react'
 
-const LoginForm = ({Login}) => {
-  const [username, setUsername] = useState('') 
+const LoginForm = ({ Login }) => {
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   const handleLogin = (e) => {
@@ -14,26 +14,26 @@ const LoginForm = ({Login}) => {
 
   return (
     <form onSubmit={handleLogin}>
-    <div>
-      <label>username</label>
-      <input
-        type="text"
-        value={username}
-        name="Username"
-        onChange={(e) => setUsername(e.target.value)}
-      />
-    </div>
-    <div>
-      <label>password</label>
-      <input
-        type="password"
-        value={password}
-        name="Password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-    </div>
-    <button type="submit">login</button>
-  </form>
+      <div>
+        <label>username</label>
+        <input
+          type="text"
+          value={username}
+          name="Username"
+          onChange={(e) => setUsername(e.target.value)}
+        />
+      </div>
+      <div>
+        <label>password</label>
+        <input
+          type="password"
+          value={password}
+          name="Password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
+      <button type="submit">login</button>
+    </form>
   )
 }
 

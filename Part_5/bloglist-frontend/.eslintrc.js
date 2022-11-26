@@ -11,9 +11,9 @@ module.exports = {
   ],
   'parserOptions': {
     'ecmaFeatures': {
-      'jsx': true
+      'jsx': true,
     },
-    'ecmaVersion"': 2018,
+    'ecmaVersion': 2018,
     'sourceType': 'module'
   },
   'plugins': [
@@ -38,7 +38,7 @@ module.exports = {
     ],
     'eqeqeq': 'error',
     'no-trailing-spaces': 'error',
-    'object-curly-spacing"': [
+    'object-curly-spacing': [
       'error', 'always'
     ],
     'arrow-spacing': [

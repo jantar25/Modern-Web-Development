@@ -1,4 +1,4 @@
-import React,{ useState } from "react"
+import React,{ useState } from 'react'
 import PropTypes from 'prop-types'
 
 
@@ -29,24 +29,24 @@ const Blog = ({
     setVisible(!visible)
   }
 
-return (
-  <div style={blogStyle}>
-    {blog.title} {blog.author}
-    <button onClick={toggleVisibility}>{!visible? 'view' : 'hide'}</button>
-    {visible &&
+  return (
+    <div style={blogStyle}>
+      {blog.title} {blog.author}
+      <button onClick={toggleVisibility}>{!visible? 'view' : 'hide'}</button>
+      {visible &&
       <div>
         <div>{blog.url}</div>
         <div>
-          likes {blog.likes} 
+          likes {blog.likes}
           <button onClick={() => handleUpdate(blog)}>like</button>
         </div>
-        <div>{blog.user?.name}</div>
-        {user === blog.user?.username &&
+        <div>{blog.user.name}</div>
+        {user === blog.user.username &&
           <button onClick={ () => handleDelete(blog) } style={blogDeleteBtnStyle}>remove</button>
         }
       </div>
-    }
-  </div>  
+      }
+    </div>
   )
 }
 
