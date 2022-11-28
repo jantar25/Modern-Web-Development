@@ -1,6 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
 
@@ -34,5 +35,29 @@ describe('render blog content', () => {
     const div = container.querySelector('.blogHidden')
     screen.debug(div)
     expect(div).toBeNull()
+  })
+})
+
+
+describe('', () => {
+  test('CSS selector render likes&url clicking button handler', async () => {
+    const blog = {
+      user:'1',
+      title:'React test with Jest',
+      likes:9,
+      author:'Jantar Man',
+      url:'https://testingReactapp.com'
+    }
+
+    const mockHandler = jest.fn()
+    const { container } = render(
+      <Blog blog={blog} toggleVisibility={mockHandler} />
+    )
+    const user = userEvent.setup()
+    const button = screen.getByText('view')
+    await user.click(button)
+    const div = container.querySelector('.blogHidden')
+    screen.debug(div)
+    expect(div).toBeDefined()
   })
 })
