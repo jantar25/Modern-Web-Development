@@ -9,32 +9,17 @@ const Blog = ({
   user
 }) => {
   const [visible, setVisible] = useState(false)
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
-  const blogDeleteBtnStyle = {
-    background: '#00BFFF',
-    padding: 2,
-    margin: 5,
-    border:'none',
-    borderRadius:5,
-    cursor:'pointer',
-  }
 
   const toggleVisibility = () => {
     setVisible(!visible)
   }
 
   return (
-    <div style={blogStyle}>
+    <div className='blog'>
       {blog.title} {blog.author}
       <button onClick={toggleVisibility}>{!visible? 'view' : 'hide'}</button>
       {visible &&
-      <div>
+      <div className='blogHidden'>
         <div>{blog.url}</div>
         <div>
           likes {blog.likes}
@@ -42,7 +27,7 @@ const Blog = ({
         </div>
         <div>{blog.user.name}</div>
         {user === blog.user.username &&
-          <button onClick={ () => handleDelete(blog) } style={blogDeleteBtnStyle}>remove</button>
+          <button onClick={ () => handleDelete(blog) } className='blogDeleteBtn' >remove</button>
         }
       </div>
       }
@@ -52,7 +37,6 @@ const Blog = ({
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  user: PropTypes.string.isRequired,
 }
 
 export default Blog

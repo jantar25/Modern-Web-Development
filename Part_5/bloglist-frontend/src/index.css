@@ -17,3 +17,20 @@
     padding: 10px;
     margin-bottom: 10px;
   }
+
+  .blog {
+    padding-top: 10px;
+    padding-left: 2px;
+    border: 'solid';
+    border-width: 1px;
+    margin-bottom: 5px;
+  }
+
+  .blogDeleteBtn {
+    background: '#00BFFF';
+    padding: 2px;
+    margin: 5px;
+    border:'none';
+    border-radius:3px;
+    cursor:'pointer';
+  }
