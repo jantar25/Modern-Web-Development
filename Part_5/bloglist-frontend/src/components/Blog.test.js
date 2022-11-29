@@ -39,8 +39,8 @@ describe('render blog content', () => {
 })
 
 
-describe('', () => {
-  test('CSS selector render likes&url clicking button handler', async () => {
+describe('clicking button handler', () => {
+  test('CSS selector render likes&url onclick', async () => {
     const blog = {
       user:'1',
       title:'React test with Jest',
@@ -51,7 +51,10 @@ describe('', () => {
 
     const mockHandler = jest.fn()
     const { container } = render(
-      <Blog blog={blog} toggleVisibility={mockHandler} />
+      <Blog
+        blog={blog}
+        toggleVisibility={mockHandler}
+      />
     )
     const user = userEvent.setup()
     const button = screen.getByText('view')
@@ -59,5 +62,33 @@ describe('', () => {
     const div = container.querySelector('.blogHidden')
     screen.debug(div)
     expect(div).toBeDefined()
+    expect(div).not.toHaveStyle('display: none')
+  })
+
+  test('render twice likes on doubleclick', async () => {
+    const blog = {
+      user:'1',
+      title:'React test with Jest',
+      likes:9,
+      author:'Jantar Man',
+      url:'https://testingReactapp.com'
+    }
+
+    const mockHandler = jest.fn()
+    const { container } = render(
+      <Blog
+        blog={blog}
+        toggleVisibility={mockHandler}
+        handleUpdate={mockHandler} />
+    )
+    const user = userEvent.setup()
+    const togleVisibilitybtn = screen.getByText('view')
+    await user.click(togleVisibilitybtn)
+
+    const buttonlike = screen.getByText('like')
+    await user.dblClick(buttonlike)
+    const div = container.querySelector('.blogHidden')
+    expect(div).toBeDefined()
+    expect(mockHandler.mock.calls).toHaveLength(2)
   })
 })
