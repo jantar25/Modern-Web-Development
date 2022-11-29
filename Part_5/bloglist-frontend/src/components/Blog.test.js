@@ -2,6 +2,7 @@ import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import BlogCraeteForm from './BlogCraeteForm'
 import Blog from './Blog'
 
 
@@ -90,5 +91,32 @@ describe('clicking button handler', () => {
     const div = container.querySelector('.blogHidden')
     expect(div).toBeDefined()
     expect(mockHandler.mock.calls).toHaveLength(2)
+  })
+})
+
+describe('Create Blog Form', () => {
+  test('Form call event handler onSubmit with righ details', async () => {
+
+    const createBlog = jest.fn()
+    const user = userEvent.setup()
+
+    render(<BlogCraeteForm createBlog={createBlog} />)
+
+    const inputTitle = screen.getByPlaceholderText('title')
+    const inputAuthor = screen.getByPlaceholderText('author')
+    const inputUrl = screen.getByPlaceholderText('url')
+    const createButton = screen.getByText('Create')
+
+    await user.type(inputTitle, 'React test with Jest')
+    await user.type(inputAuthor, 'Jantar Man')
+    await user.type(inputUrl, 'https://testingReactapp.com')
+    await user.click(createButton)
+
+    expect(createBlog.mock.calls).toHaveLength(1)
+    expect(createBlog.mock.calls[0][0]).toStrictEqual({
+      title: 'React test with Jest',
+      author: 'Jantar Man',
+      url: 'https://testingReactapp.com'
+    })
   })
 })

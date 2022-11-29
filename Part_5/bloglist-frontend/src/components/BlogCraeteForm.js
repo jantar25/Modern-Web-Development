@@ -24,6 +24,7 @@ const BlogCraeteForm = ({ createBlog }) => {
             type="text"
             value={title}
             name="title"
+            placeholder='title'
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
@@ -33,6 +34,7 @@ const BlogCraeteForm = ({ createBlog }) => {
             type="text"
             value={author}
             name="author"
+            placeholder='author'
             onChange={(e) => setAuthor(e.target.value)}
           />
         </div>
@@ -42,6 +44,7 @@ const BlogCraeteForm = ({ createBlog }) => {
             type="text"
             value={url}
             name="url"
+            placeholder='url'
             onChange={(e) => setUrl(e.target.value)}
           />
         </div>
