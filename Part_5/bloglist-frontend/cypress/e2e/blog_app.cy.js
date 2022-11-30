@@ -14,13 +14,30 @@ describe('Blog app', function() {
     cy.contains('Log in to application')
   })
 
-  it('user can login In', function() {
-    cy.get('#username').type('Jantar')
-    cy.get('#password').type('12345')
-    cy.get('#loginBtn').click()
 
-    cy.contains('blogs')
-    cy.contains('Jantar Man logged In')
+  describe('Login',function() {
+    it('succeeds with correct credentials', function() {
+      cy.get('#username').type('Jantar')
+      cy.get('#password').type('12345')
+      cy.get('#loginBtn').click()
+
+      cy.contains('blogs')
+      cy.contains('Jantar Man logged In')
+    })
+
+    it('fails with wrong credentials', function() {
+      cy.get('#username').type('Jantar')
+      cy.get('#password').type('wrong')
+      cy.get('#loginBtn').click()
+
+      cy.contains('invalid username or password')
+      cy.get('.error')
+        .should('contain', 'invalid username or password')
+        .and('have.css', 'color', 'rgb(255, 0, 0)')
+        .and('have.css', 'border-style', 'solid')
+
+      cy.get('html').should('not.contain', 'Jantar Man logged In')
+    })
   })
 
 })
