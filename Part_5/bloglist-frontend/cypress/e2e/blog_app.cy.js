@@ -56,6 +56,25 @@ describe('Blog app', function() {
 
       cy.contains('A Blog created by cypress Jantar Boss')
     })
-  })
 
+    describe('and a blog exists', function () {
+      beforeEach(function () {
+        cy.contains('create new blog').click()
+        cy.get('#title').type('Another Blog created by cypress')
+        cy.get('#author').type('Le grand')
+        cy.get('#url').type('https://localhost:3000/anotherCreateBlog')
+        cy.get('#create').click()
+      })
+      it('it can be liked', function () {
+        cy.contains('Another Blog created by cypress Le grand')
+          .get('#view').click()
+        cy.contains('Another Blog created by cypress Le grand')
+          .get('#like').click()
+
+        cy.contains('Another Blog created by cypress Le grand')
+          .get('#blogHidden')
+          .contains('likes 1')
+      })
+    })
+  })
 })
