@@ -17,22 +17,27 @@ const LoginForm = ({ Login }) => {
       <div>
         <label>username</label>
         <input
+          id='username'
           type="text"
           value={username}
-          name="Username"
+          name="username"
           onChange={(e) => setUsername(e.target.value)}
         />
       </div>
       <div>
         <label>password</label>
         <input
+          id='password'
           type="password"
           value={password}
           name="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      <button type="submit">login</button>
+      <button
+        type="submit"
+        id='loginBtn'
+      >login</button>
     </form>
   )
 }
