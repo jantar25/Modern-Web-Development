@@ -1,3 +1,12 @@
+Cypress.Commands.add('login', ({ username, password }) => {
+  cy.request('POST', 'http://localhost:3003/api/login/', {
+    username, password
+  }).then(({ body }) => {
+    localStorage.setItem('loggedUser', JSON.stringify(body))
+    cy.visit('http://localhost:3000')
+  })
+})
+
 describe('Blog app', function() {
   beforeEach(function() {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
@@ -42,9 +51,7 @@ describe('Blog app', function() {
 
   describe('when logged in', function() {
     beforeEach(function() {
-      cy.get('#username').type('Jantar')
-      cy.get('#password').type('12345')
-      cy.get('#loginBtn').click()
+      cy.login({ username: 'Jantar', password: '12345' })
     })
 
     it('a new blog can be created', function() {
@@ -64,16 +71,23 @@ describe('Blog app', function() {
         cy.get('#author').type('Le grand')
         cy.get('#url').type('https://localhost:3000/anotherCreateBlog')
         cy.get('#create').click()
+
+        cy.contains('create new blog').click()
+        cy.get('#title').type('A Blog created by cypress')
+        cy.get('#author').type('Jantar Boss')
+        cy.get('#url').type('https://localhost:3000/createBlog')
+        cy.get('#create').click()
       })
       it('it can be liked', function () {
-        cy.contains('Another Blog created by cypress Le grand')
-          .get('#view').click()
-        cy.contains('Another Blog created by cypress Le grand')
-          .get('#like').click()
+        cy.contains('A Blog created by cypress Jantar Boss')
+          .parent().find('#view').click()
 
-        cy.contains('Another Blog created by cypress Le grand')
-          .get('#blogHidden')
-          .contains('likes 1')
+        cy.contains('A Blog created by cypress Jantar Boss')
+          .parent().find('#like').click()
+
+        cy.contains('A Blog created by cypress Jantar Boss')
+          .parent().find('#blogLike')
+          .should('contain', 'likes 0')
       })
     })
   })

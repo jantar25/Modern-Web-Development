@@ -16,17 +16,16 @@ const Blog = ({
 
   return (
     <div className='blog'>
-      {blog.title} {blog.author}
+      <span>{blog.title} {blog.author}</span>
       <button
         id={!visible? 'view' : 'hide'}
         onClick={toggleVisibility}>{!visible? 'view' : 'hide'}</button>
       {visible &&
       <div
-        id='blogHidden'
         className='blogHidden'>
         <div>{blog.url}</div>
         <div>
-          likes {blog.likes}
+          <span id='blogLike'>likes {blog.likes}</span>
           <button
             id='like'
             onClick={() => handleUpdate(blog)}>like</button>
