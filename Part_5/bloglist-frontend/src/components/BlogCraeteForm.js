@@ -21,6 +21,7 @@ const BlogCraeteForm = ({ createBlog }) => {
         <div>
           <label>tittle</label>
           <input
+            id='title'
             type="text"
             value={title}
             name="title"
@@ -31,6 +32,7 @@ const BlogCraeteForm = ({ createBlog }) => {
         <div>
           <label>author</label>
           <input
+            id='author'
             type="text"
             value={author}
             name="author"
@@ -41,6 +43,7 @@ const BlogCraeteForm = ({ createBlog }) => {
         <div>
           <label>url</label>
           <input
+            id='url'
             type="text"
             value={url}
             name="url"
@@ -48,7 +51,10 @@ const BlogCraeteForm = ({ createBlog }) => {
             onChange={(e) => setUrl(e.target.value)}
           />
         </div>
-        <button type="submit">Create</button>
+        <button
+          id='create'
+          type="submit"
+        >Create</button>
       </form>
     </div>
   )

@@ -40,4 +40,22 @@ describe('Blog app', function() {
     })
   })
 
+  describe('when logged in', function() {
+    beforeEach(function() {
+      cy.get('#username').type('Jantar')
+      cy.get('#password').type('12345')
+      cy.get('#loginBtn').click()
+    })
+
+    it('a new blog can be created', function() {
+      cy.contains('create new blog').click()
+      cy.get('#title').type('A Blog created by cypress')
+      cy.get('#author').type('Jantar Boss')
+      cy.get('#url').type('https://localhost:3000/createBlog')
+      cy.get('#create').click()
+
+      cy.contains('A Blog created by cypress Jantar Boss')
+    })
+  })
+
 })
