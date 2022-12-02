@@ -52,7 +52,7 @@ describe('Blog app', function() {
   describe('when logged in', function() {
     beforeEach(function() {
       cy.login({ username: 'Jantar', password: '12345' })
-    })
+    },100000)
 
     it('a new blog can be created', function() {
       cy.contains('create new blog').click()
@@ -77,7 +77,8 @@ describe('Blog app', function() {
         cy.get('#author').type('Jantar Boss')
         cy.get('#url').type('https://localhost:3000/createBlog')
         cy.get('#create').click()
-      })
+      },200000)
+
       it('it can be liked', function () {
         cy.contains('A Blog created by cypress Jantar Boss')
           .parent().find('#view').click()
@@ -87,7 +88,28 @@ describe('Blog app', function() {
 
         cy.contains('A Blog created by cypress Jantar Boss')
           .parent().find('#blogLike')
-          .should('contain', 'likes 0')
+          .should('contain', 'likes 1')
+      })
+
+      it('it can be deleted', function () {
+        cy.contains('A Blog created by cypress Jantar Boss')
+          .parent().find('#view').click()
+
+        cy.contains('A Blog created by cypress Jantar Boss')
+          .parent().find('#delete').click()
+
+        cy.get('.blog').should('not.contain', 'A Blog created by cypress Jantar Boss')
+      })
+
+      it('the most liked blog being first', function () {
+        cy.contains('A Blog created by cypress Jantar Boss')
+          .parent().find('#view').click()
+
+        cy.contains('A Blog created by cypress Jantar Boss')
+          .parent().find('#like').click()
+
+        cy.get('.blog').eq(1).should('contain', 'A Blog created by cypress Jantar Boss')
+        cy.get('.blog').eq(0).should('contain', 'Another Blog created by cypress Le grand')
       })
     })
   })

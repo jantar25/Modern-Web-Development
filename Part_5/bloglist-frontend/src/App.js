@@ -15,7 +15,6 @@ const App = () => {
   const [ successMessage, setSuccessMessage ] = useState(null)
   const blogFormRef = useRef()
 
-
   //LOGIN
   const handleLogin = async (userObject) => {
     try {

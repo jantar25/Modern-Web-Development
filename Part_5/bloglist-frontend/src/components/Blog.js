@@ -32,7 +32,10 @@ const Blog = ({
         </div>
         <div>{blog.user.name}</div>
         {user === blog.user.username &&
-          <button onClick={ () => handleDelete(blog) } className='blogDeleteBtn' >remove</button>
+          <button
+            id='delete'
+            onClick={ () => handleDelete(blog) }
+            className='blogDeleteBtn' >remove</button>
         }
       </div>
       }
