@@ -1,13 +1,19 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { anecdoteVote } from '../reducers/anecdoteReducer'
+import { settingVoteNotification, RemovingNotification } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
     const anecdotes = useSelector(state => state.anecdote)
     const dispatch = useDispatch()
     const sortedAnecdote = [...anecdotes].sort((a, b) => b.votes - a.votes)
-    const vote = (id) => {
-      dispatch(anecdoteVote(id))
+
+    const vote = (annectode) => {
+      dispatch(anecdoteVote(annectode.id))
+      dispatch(settingVoteNotification(annectode.content))
+      setTimeout(() => {
+        dispatch(RemovingNotification())
+      }, 5000)
     }
   
   return (
@@ -20,7 +26,7 @@ const AnecdoteList = () => {
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            <button onClick={() => vote(anecdote)}>vote</button>
           </div>
         </div>
       )}
