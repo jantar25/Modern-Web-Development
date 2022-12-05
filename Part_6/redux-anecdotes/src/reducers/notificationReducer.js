@@ -9,7 +9,7 @@ const notificationSlice = createSlice({
         settingVoteNotification(state, action) {
             return state =`you voted '${action.payload}'`
           },
-          settingAnecdoteNotification(state, action) {
+        settingAnecdoteNotification(state, action) {
             return state =`you added '${action.payload}'`
           },
         RemovingNotification(state, action) {

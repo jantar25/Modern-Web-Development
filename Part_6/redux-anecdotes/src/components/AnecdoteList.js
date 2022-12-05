@@ -5,9 +5,9 @@ import { settingVoteNotification, RemovingNotification } from '../reducers/notif
 
 const AnecdoteList = () => {
     const anecdotes = useSelector(state => state.anecdote)
+    const filter = useSelector(state => state.filter)
     const dispatch = useDispatch()
     const sortedAnecdote = [...anecdotes].sort((a, b) => b.votes - a.votes)
-
     const vote = (annectode) => {
       dispatch(anecdoteVote(annectode.id))
       dispatch(settingVoteNotification(annectode.content))
@@ -19,6 +19,10 @@ const AnecdoteList = () => {
   return (
     <div>
     {sortedAnecdote
+      .filter(anecdote => 
+        anecdote
+          .content.toLowerCase()
+          .includes(filter.toLowerCase()))
       .map(anecdote =>
         <div key={anecdote.id}>
           <div>
