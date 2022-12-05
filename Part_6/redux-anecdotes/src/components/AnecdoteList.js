@@ -4,11 +4,11 @@ import { anecdoteVote } from '../reducers/anecdoteReducer'
 import { settingVoteNotification, RemovingNotification } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
-    const anecdotes = useSelector(state => state.anecdote)
-    const filter = useSelector(state => state.filter)
     const dispatch = useDispatch()
-    const sortedAnecdote = [...anecdotes].sort((a, b) => b.votes - a.votes)
-    const vote = (annectode) => {
+    const { anecdote,filter } = useSelector(state => state)
+    const sortedAnecdote = [...anecdote].sort((a, b) => b.votes - a.votes)
+
+    const voteAnecdote = (annectode) => {
       dispatch(anecdoteVote(annectode.id))
       dispatch(settingVoteNotification(annectode.content))
       setTimeout(() => {
@@ -30,7 +30,7 @@ const AnecdoteList = () => {
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote)}>vote</button>
+            <button onClick={() => voteAnecdote(anecdote)}>vote</button>
           </div>
         </div>
       )}
