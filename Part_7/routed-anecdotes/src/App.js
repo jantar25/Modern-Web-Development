@@ -8,6 +8,7 @@ import About from './Components/About'
 import Footer from './Components/Footer'
 import CreateNew from './Components/CreateNew'
 import Anecdote from './Components/Anecdote'
+import Notification from './Components/Notification'
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -32,6 +33,10 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`A new anecdote '${anecdote.content}' created!!`)
+    setTimeout(()=>{
+      setNotification('')
+    },5000)
   }
 
   const anecdoteById = (id) =>
@@ -52,6 +57,7 @@ const App = () => {
     <Router>
       <h1>Software anecdotes</h1>
       <Menu />
+      <Notification notification={notification} />
       <Routes>
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
         <Route path="/anecdotes/:id" element={<Anecdote anecdotes={anecdotes} />} />
