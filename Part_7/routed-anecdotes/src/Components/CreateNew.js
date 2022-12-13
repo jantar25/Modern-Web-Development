@@ -6,7 +6,9 @@ const CreateNew = ({ addNew }) => {
     const content = useField('content')
     const author = useField('author')
     const info = useField('info')
-  
+    const reset = useField('reset')
+    
+
     const handleSubmit = (e) => {
       e.preventDefault()
       addNew({
@@ -33,7 +35,10 @@ const CreateNew = ({ addNew }) => {
           url for more info
           <input {...info} />
         </div>
-        <button>create</button>
+        <div>
+        <button type='submit'>create</button>
+        <button {...reset} onClick={reset.reset}>reset</button>
+        </div>
       </form>
     </div>
   )
