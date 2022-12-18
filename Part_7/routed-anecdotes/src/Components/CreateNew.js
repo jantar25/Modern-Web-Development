@@ -3,11 +3,10 @@ import { useField } from '../hooks'
 
 const CreateNew = ({ addNew }) => {
     const navigate = useNavigate()
-    const content = useField('content')
-    const author = useField('author')
-    const info = useField('info')
+    const content = useField('text')
+    const author = useField('text')
+    const info = useField('text')
     const reset = useField('reset')
-    
 
     const handleSubmit = (e) => {
       e.preventDefault()
