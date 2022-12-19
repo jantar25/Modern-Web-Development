@@ -38,7 +38,7 @@ const updateBlog = async (id, newBlogObject) => {
     newBlogObject,
     config
   )
-  return updateRequest
+  return updateRequest.data
 }
 
 const blogService = { getAll, create, setToken, deleteBlog, updateBlog }

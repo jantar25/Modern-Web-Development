@@ -1,14 +1,16 @@
 import { useState, useEffect, useRef } from 'react'
-import Blog from './components/Blog'
+import { useDispatch } from 'react-redux'
+import { initializeBlog,createBlog,likeBlog,deleteBlog } from './reducers/blogReducer'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import BlogCraeteForm from './components/BlogCraeteForm'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
+import BlogsList from './components/BlogsList'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  const dispatch = useDispatch()
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
@@ -41,9 +43,8 @@ const App = () => {
   const handleCreate = async (blogObject) => {
     blogFormRef.current.toggleVisibility()
     try {
-      const blog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(blog))
-      setSuccessMessage(`A new blog ${blog.title} by ${blog.author} added`)
+      dispatch(createBlog(blogObject))
+      setSuccessMessage(`A new blog ${blogObject.title} by ${blogObject.author} added`)
       setTimeout(() => {
         setSuccessMessage(null)
       }, 5000)
@@ -55,13 +56,11 @@ const App = () => {
       console.log(error)
     }
   }
-
   //DELETE A BLOG
   const handleDelete = async (blog) => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
       try {
-        await blogService.deleteBlog(blog.id)
-        setBlogs(blogs.filter((b) => b.id !== blog.id))
+        dispatch(deleteBlog(blog.id))
         setSuccessMessage('Deleted Successfully')
         setTimeout(() => {
           setSuccessMessage(null)
@@ -86,12 +85,11 @@ const App = () => {
       url: blog.url,
     }
     try {
-      const updatedBlog = await blogService.updateBlog(blog.id, blogToUpdate)
-      setBlogs(
-        blogs.map((b) =>
-          b.id !== blog.id ? b : { ...b, likes: updatedBlog.data.likes }
-        )
-      )
+      dispatch(likeBlog(blog.id,blogToUpdate))
+      setSuccessMessage(`you liked '${blog.title}'`)
+      setTimeout(() => {
+        setSuccessMessage(null)
+      }, 5000)
     } catch (error) {
       setErrorMessage(error.response.data.error)
       setTimeout(() => {
@@ -102,8 +100,8 @@ const App = () => {
   }
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
-  }, [])
+    dispatch(initializeBlog())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
@@ -122,7 +120,8 @@ const App = () => {
           message={errorMessage || successMessage}
           style={errorMessage ? 'error' : 'success'}
         />
-        <LoginForm Login={handleLogin} />
+        <LoginForm
+          Login={handleLogin} />
       </div>
     )
   }
@@ -141,17 +140,10 @@ const App = () => {
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
         <BlogCraeteForm createBlog={handleCreate} />
       </Togglable>
-      {blogs
-        .sort((a, b) => b.likes - a.likes)
-        .map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            handleDelete={handleDelete}
-            handleUpdate={handleUpdate}
-            user={user.username}
-          />
-        ))}
+      <BlogsList
+        user={user}
+        handleUpdate={handleUpdate}
+        handleDelete={handleDelete} />
     </div>
   )
 }
