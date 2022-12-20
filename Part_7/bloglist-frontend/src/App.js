@@ -1,6 +1,6 @@
 import React,{ useEffect } from 'react'
 import { BrowserRouter as Router,Routes,Route,
-  Navigate } from 'react-router-dom'
+  Navigate  } from 'react-router-dom'
 import { useDispatch,useSelector } from 'react-redux'
 import { logoutUser,initializeUser } from './reducers/userReducer'
 import { initializeBlog } from './reducers/blogReducer'
@@ -9,10 +9,12 @@ import Home from './Pages/Home'
 import LoginForm from './components/LoginForm'
 import UserView from './components/UserView'
 import Users from './components/Users'
+import BlogsView from './components/BlogsView'
 
 const App = () => {
   const dispatch = useDispatch()
   const { user } = useSelector(state => state)
+
   const handleLogout = async (e) => {
     e.preventDefault()
     window.localStorage.clear()
@@ -43,6 +45,7 @@ const App = () => {
         <Notification />
         <Routes>
           <Route path="/" element={user? <Home /> : <Navigate replace to="/login" />} />
+          <Route path="/blogs/:id" element={<BlogsView />} />
           <Route path="/users/:id" element={<UserView />} />
           <Route path="/users" element={<Users />} />
           <Route path="/login" element={!user? <LoginForm /> : <Navigate replace to="/" />} />

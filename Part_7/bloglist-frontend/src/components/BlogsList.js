@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import Blog from './Blog'
 
 const BlogsList = () => {
@@ -11,11 +12,12 @@ const BlogsList = () => {
       <h2>blogs</h2>
       {sortedBlogs
         .map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            user={user}
-          />
+          <Link key={blog.id} to={`/blogs/${blog.id}`}>
+            <Blog
+              blog={blog}
+              user={user}
+            />
+          </Link>
         ))}
     </div>
   )
