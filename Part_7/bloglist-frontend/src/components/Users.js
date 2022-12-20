@@ -2,8 +2,6 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-
-
 const Users = () => {
   const { user,blogs } = useSelector(state => state)
   const userblogs = blogs.map((blog) => blog.user && { ...blog, user:blog.user.name,userId:blog.user.id })
@@ -24,21 +22,24 @@ const Users = () => {
   }
 
   return (
-    <table>
-      <tbody>
-        <tr>
-          <th></th>
-          <th>Blog Created</th>
-        </tr>
-        {blogsByUser
-          .map((blog,index) => (
-            <tr key={index}>
-              <td><Link to={`/users/${blog[0]}`}>{blog[1][0].user}</Link></td>
-              <td>{blog[1].length}</td>
-            </tr>
-          ))}
-      </tbody>
-    </table>
+    <div>
+      <h2>Users</h2>
+      <table>
+        <tbody>
+          <tr>
+            <th></th>
+            <th>blog Created</th>
+          </tr>
+          {blogsByUser
+            .map((blog,index) => (
+              <tr key={index}>
+                <td><Link to={`/users/${blog[0]}`}>{blog[1][0].user}</Link></td>
+                <td>{blog[1].length}</td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </div>
   )
 }
 
