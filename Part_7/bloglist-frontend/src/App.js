@@ -1,42 +1,20 @@
-import { useState, useEffect, useRef } from 'react'
-import { useDispatch } from 'react-redux'
-import { initializeBlog,createBlog } from './reducers/blogReducer'
-import blogService from './services/blogs'
-import loginService from './services/login'
+import { useEffect } from 'react'
+import { useDispatch,useSelector } from 'react-redux'
+import { initializeBlog } from './reducers/blogReducer'
+import { initializeUser,logoutUser } from './reducers/userReducer'
 import Notification from './components/Notification'
 import BlogCraeteForm from './components/BlogCraeteForm'
 import LoginForm from './components/LoginForm'
-import Togglable from './components/Togglable'
 import BlogsList from './components/BlogsList'
 
 const App = () => {
   const dispatch = useDispatch()
-  const [user, setUser] = useState(null)
-  const blogFormRef = useRef()
+  const { user } = useSelector(state => state)
 
-  //LOGIN
-  const handleLogin = async (userObject) => {
-    try {
-      const user = await loginService.login(userObject)
-      window.localStorage.setItem('loggedUser', JSON.stringify(user))
-      blogService.setToken(user.token)
-      setUser(user)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  //LOG OUT
   const handleLogout = async (e) => {
     e.preventDefault()
     window.localStorage.clear()
-    setUser(null)
-  }
-
-  //ADD BLOG
-  const handleCreate = async (blogObject) => {
-    blogFormRef.current.toggleVisibility()
-    dispatch(createBlog(blogObject))
+    dispatch(logoutUser())
   }
 
   useEffect(() => {
@@ -47,8 +25,7 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
+      dispatch(initializeUser(user))
     }
   }, [])
 
@@ -57,8 +34,7 @@ const App = () => {
       <div>
         <h2>Log in to application</h2>
         <Notification />
-        <LoginForm
-          Login={handleLogin} />
+        <LoginForm />
       </div>
     )
   }
@@ -71,9 +47,7 @@ const App = () => {
         <button onClick={handleLogout}>logout</button>
       </div>
       <br />
-      <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <BlogCraeteForm createBlog={handleCreate} />
-      </Togglable>
+      <BlogCraeteForm />
       <BlogsList user={user} />
     </div>
   )

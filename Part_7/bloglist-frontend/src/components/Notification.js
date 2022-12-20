@@ -11,7 +11,9 @@ const Notification = () => {
   const indexOfSpace = notification.indexOf(' ')
   const style = notification.split(' ')[0]
   return (
-    <div className={style}>{notification.substring(indexOfSpace + 1)}</div>
+    <div className={style}>
+      {notification.substring(indexOfSpace + 1)}
+    </div>
   )
 }
 

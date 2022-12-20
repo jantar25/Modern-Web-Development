@@ -39,7 +39,7 @@ export const createBlog = content => {
     try {
       const newBlog = await blogService.create(content)
       dispatch(appendBlog(newBlog))
-      dispatch(makeSuccessNotification(`A new blog ${newBlog.title} by ${newBlog.author} added`, 5))
+      dispatch(makeSuccessNotification(`A new blog '${newBlog.title}' by ${newBlog.author} added`, 5))
     } catch (error) {
       dispatch(makeFailureNotification(error.response.data.error, 5))
     }
@@ -52,7 +52,7 @@ export const likeBlog = (id,updatedObject) => {
     try {
       const updatedBlog = await blogService.updateBlog(id,updatedObject)
       dispatch(updateBlog(updatedBlog))
-      dispatch(makeSuccessNotification(`you liked '${updatedBlog.title}`, 5))
+      dispatch(makeSuccessNotification(`you liked '${updatedBlog.title}'`, 5))
     } catch (error) {
       dispatch(makeFailureNotification(error.response.data.error, 5))
     }
