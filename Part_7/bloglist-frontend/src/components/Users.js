@@ -5,25 +5,11 @@ import { getAllUsers } from '../reducers/usersReducer'
 
 const Users = () => {
   const dispatch = useDispatch()
-  // const userblogs = blogs.map((blog) => blog.user && { ...blog, user:blog.user.name,userId:blog.user.id })
-  // const groupBy = (blogs,key) => blogs.reduce(
-  //   (result, blog) => ({
-  //     ...result,
-  //     [blog[key]]: [
-  //       ...(result[blog[key]] || []),
-  //       blog,
-  //     ],
-  //   }),
-  //   {},
-  // )
-  // const blogsByUser = Object.entries(groupBy(userblogs,'userId'))
+  const { users } = useSelector(state => state)
 
   useEffect(() => {
     dispatch(getAllUsers())
   },[])
-
-  const { users } = useSelector(state => state)
-  console.log(users)
 
   if (!users) {
     return null

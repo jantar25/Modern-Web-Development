@@ -5,7 +5,6 @@ import { useParams } from 'react-router-dom'
 const UserView = () => {
   const id = useParams().id
   const { users } = useSelector(state => state)
-  // const userblogs = blogs.map((blog) => blog.user && { ...blog, user:blog.user.name,userId:blog.user.id })
   const userToView = users.filter(user => user.id === id)
   console.log(userToView)
   return (

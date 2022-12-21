@@ -63,11 +63,15 @@ blogsRouter.put('/:id', async (request, response) => {
 
 
 blogsRouter.put('/:id/comments', async (request, response) => {
-  const comment = JSON.stringify(request.body)
-  console.log(comment)
-  console.log(request.params.id)
+  const body = request.body
+  const value = body.comment
+  if (!value) {
+    return response.status(400).json({
+      error: 'content missing'
+    })
+  }
   const blogToComment = await Blog.findById(request.params.id)
-  blogToComment.comments.push(comment)
+  blogToComment.comments.push(value)
   const commentedtedBlog = await Blog.findByIdAndUpdate(request.params.id, blogToComment,
     { new: true, runValidators: true, context: 'query' })
   response.status(200).json(commentedtedBlog)

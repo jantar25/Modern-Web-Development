@@ -18,6 +18,12 @@ const blogSlice = createSlice({
         b.id !== id ? b : { ...b, likes: action.payload.likes }
       )
     },
+    updateBlogComment(state, action) {
+      const id = action.payload.id
+      return state.map((b) =>
+        b.id !== id ? b : { ...b, comments: action.payload.comments }
+      )
+    },
     deletionBlog(state, action) {
       const id = action.payload
       return state.filter((b) => b.id !== id)
@@ -25,7 +31,7 @@ const blogSlice = createSlice({
   }
 })
 
-const { setBlog,appendBlog,updateBlog,deletionBlog } = blogSlice.actions
+const { setBlog,appendBlog,updateBlog,deletionBlog,updateBlogComment } = blogSlice.actions
 
 export const initializeBlog = () => {
   return async dispatch => {
@@ -53,6 +59,18 @@ export const likeBlog = (id,updatedObject) => {
       const updatedBlog = await blogService.updateBlog(id,updatedObject)
       dispatch(updateBlog(updatedBlog))
       dispatch(makeSuccessNotification(`you liked '${updatedBlog.title}'`, 5))
+    } catch (error) {
+      dispatch(makeFailureNotification(error.response.data.error, 5))
+    }
+  }
+}
+
+export const commentBlog = (id,comment) => {
+  return async dispatch => {
+    try {
+      const commentedBlog = await blogService.commentBlog(id,comment)
+      dispatch(updateBlogComment(commentedBlog))
+      dispatch(makeSuccessNotification(`you commented '${comment.comment}'`, 5))
     } catch (error) {
       dispatch(makeFailureNotification(error.response.data.error, 5))
     }

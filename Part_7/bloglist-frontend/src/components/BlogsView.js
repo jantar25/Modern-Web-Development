@@ -10,7 +10,7 @@ const BlogsView = () => {
   const dispatch = useDispatch()
   const { blogs,user } = useSelector(state => state)
   const blogToView = blogs.find(blog => blog.id === id)
-  console.log(blogToView)
+
   //DELETE A BLOG
   const handleDelete = async () => {
     if (window.confirm(`Remove blog ${blogToView.title} by ${blogToView.author}?`)) {
