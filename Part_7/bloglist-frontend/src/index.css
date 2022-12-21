@@ -33,3 +33,14 @@
   border-radius: 3px;
   cursor: pointer;
 }
+
+.menu {
+  background: rgb(145, 168, 168);
+  padding: 2px;
+  margin-bottom: 15px;
+}
+
+.padding {
+  margin-left: 2px;
+  margin-right: 2px;
+}

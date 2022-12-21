@@ -1,9 +1,9 @@
 import React,{ useEffect } from 'react'
-import { BrowserRouter as Router,Routes,Route,
-  Navigate  } from 'react-router-dom'
+import { BrowserRouter as Router,Routes,Route,Navigate } from 'react-router-dom'
 import { useDispatch,useSelector } from 'react-redux'
-import { logoutUser,initializeUser } from './reducers/userReducer'
+import { initializeUser } from './reducers/userReducer'
 import { initializeBlog } from './reducers/blogReducer'
+import Menu from './components/Menu'
 import Notification from './components/Notification'
 import Home from './Pages/Home'
 import LoginForm from './components/LoginForm'
@@ -13,13 +13,6 @@ import BlogsView from './components/BlogsView'
 
 const App = () => {
   const dispatch = useDispatch()
-  const { user } = useSelector(state => state)
-
-  const handleLogout = async (e) => {
-    e.preventDefault()
-    window.localStorage.clear()
-    dispatch(logoutUser())
-  }
 
   useEffect(() => {
     dispatch(initializeBlog())
@@ -33,15 +26,12 @@ const App = () => {
     }
   }, [])
 
+  const { user } = useSelector(state => state)
 
   return (
     <Router>
       <div>
-        {user &&
-        <div>
-          <p>{user.name} logged In</p>
-          <button onClick={handleLogout}>logout</button>
-        </div>}
+        <Menu />
         <Notification />
         <Routes>
           <Route path="/" element={user? <Home /> : <Navigate replace to="/login" />} />
