@@ -1,23 +1,31 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React,{ useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useDispatch,useSelector } from 'react-redux'
+import { getAllUsers } from '../reducers/usersReducer'
 
 const Users = () => {
-  const { user,blogs } = useSelector(state => state)
-  const userblogs = blogs.map((blog) => blog.user && { ...blog, user:blog.user.name,userId:blog.user.id })
-  const groupBy = (blogs,key) => blogs.reduce(
-    (result, blog) => ({
-      ...result,
-      [blog[key]]: [
-        ...(result[blog[key]] || []),
-        blog,
-      ],
-    }),
-    {},
-  )
+  const dispatch = useDispatch()
+  // const userblogs = blogs.map((blog) => blog.user && { ...blog, user:blog.user.name,userId:blog.user.id })
+  // const groupBy = (blogs,key) => blogs.reduce(
+  //   (result, blog) => ({
+  //     ...result,
+  //     [blog[key]]: [
+  //       ...(result[blog[key]] || []),
+  //       blog,
+  //     ],
+  //   }),
+  //   {},
+  // )
+  // const blogsByUser = Object.entries(groupBy(userblogs,'userId'))
 
-  const blogsByUser = Object.entries(groupBy(userblogs,'userId'))
-  if (!user) {
+  useEffect(() => {
+    dispatch(getAllUsers())
+  },[])
+
+  const { users } = useSelector(state => state)
+  console.log(users)
+
+  if (!users) {
     return null
   }
 
@@ -30,11 +38,11 @@ const Users = () => {
             <th></th>
             <th>blog Created</th>
           </tr>
-          {blogsByUser
-            .map((blog,index) => (
-              <tr key={index}>
-                <td><Link to={`/users/${blog[0]}`}>{blog[1][0].user}</Link></td>
-                <td>{blog[1].length}</td>
+          {users
+            .map((user) => (
+              <tr key={user.id}>
+                <td><Link to={`/users/${user.id}`}>{user.name}</Link></td>
+                <td>{user.blogs.length}</td>
               </tr>
             ))}
         </tbody>

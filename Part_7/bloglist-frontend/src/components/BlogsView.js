@@ -3,13 +3,14 @@ import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { likeBlog,deleteBlog } from '../reducers/blogReducer'
+import BlogComments from './BlogComments'
 
 const BlogsView = () => {
   const id = useParams().id
   const dispatch = useDispatch()
   const { blogs,user } = useSelector(state => state)
   const blogToView = blogs.find(blog => blog.id === id)
-
+  console.log(blogToView)
   //DELETE A BLOG
   const handleDelete = async () => {
     if (window.confirm(`Remove blog ${blogToView.title} by ${blogToView.author}?`)) {
@@ -48,6 +49,7 @@ const BlogsView = () => {
               remove
         </button>
       )}
+      <BlogComments blog={blogToView} />
     </div>
   )
 }
