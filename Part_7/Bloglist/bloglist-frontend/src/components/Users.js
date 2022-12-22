@@ -1,16 +1,10 @@
-import React,{ useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch,useSelector } from 'react-redux'
-import { getAllUsers } from '../reducers/usersReducer'
+import { useSelector } from 'react-redux'
 import { Table } from 'react-bootstrap'
 
 const Users = () => {
-  const dispatch = useDispatch()
   const { users } = useSelector(state => state)
-
-  useEffect(() => {
-    dispatch(getAllUsers())
-  },[])
 
   if (!users) {
     return null

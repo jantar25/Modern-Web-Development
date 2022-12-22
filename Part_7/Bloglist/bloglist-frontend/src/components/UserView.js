@@ -5,8 +5,12 @@ import { useParams } from 'react-router-dom'
 const UserView = () => {
   const id = useParams().id
   const { users } = useSelector(state => state)
-  const userToView = users.filter(user => user.id === id)
+  const userToView = users ?users.filter(user => user.id === id) : null
 
+
+  if (!userToView) {
+    return null
+  }
   return (
     <div className='container'>
       <h1>{userToView[0].name}</h1>

@@ -6,37 +6,43 @@ const CreateNew = ({ addNew }) => {
     const content = useField('text')
     const author = useField('text')
     const info = useField('text')
-    const reset = useField('reset')
 
     const handleSubmit = (e) => {
       e.preventDefault()
       addNew({
-        content:content.value,
-        author:author.value,
-        info:info.value,
+        content:content.fields.value,
+        author:author.fields.value,
+        info:info.fields.value,
         votes: 0
       })
       navigate('/')
     }
+
+    const handleReset = () => {
+      info.reset()
+      author.reset()
+      content.reset()
+    }
+
   return (
     <div>
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input {...content} />
+          <input {...content.fields} />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...author.fields} />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...info.fields} />
         </div>
         <div>
         <button type='submit'>create</button>
-        <button {...reset} onClick={reset.reset}>reset</button>
+        <button type='reset' onClick={handleReset}>reset</button>
         </div>
       </form>
     </div>

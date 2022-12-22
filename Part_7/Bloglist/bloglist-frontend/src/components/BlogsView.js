@@ -28,6 +28,11 @@ const BlogsView = () => {
     }
     dispatch(likeBlog(blogToView.id,blogToUpdate))
   }
+
+  if (!blogToView) {
+    return null
+  }
+
   return (
     <div className='container'>
       <h1>{blogToView.title} by {blogToView.author}</h1>
