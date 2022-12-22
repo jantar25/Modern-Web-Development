@@ -2,6 +2,7 @@ import React, { useState,useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import Togglable from './Togglable'
+import { Form, Button } from 'react-bootstrap'
 
 const BlogCraeteForm = () => {
   const [title, setTitle] = useState('')
@@ -22,10 +23,10 @@ const BlogCraeteForm = () => {
   return (
     <Togglable buttonLabel="create new blog" ref={blogFormRef}>
       <h2>Create new</h2>
-      <form onSubmit={handleCreate}>
-        <div>
-          <label>tittle</label>
-          <input
+      <Form onSubmit={handleCreate}>
+        <Form.Group>
+          <Form.Label>tittle</Form.Label>
+          <Form.Control className="mb-3"
             id="title"
             type="text"
             value={title}
@@ -33,10 +34,8 @@ const BlogCraeteForm = () => {
             placeholder="title"
             onChange={(e) => setTitle(e.target.value)}
           />
-        </div>
-        <div>
-          <label>author</label>
-          <input
+          <Form.Label>author</Form.Label>
+          <Form.Control className="mb-3"
             id="author"
             type="text"
             value={author}
@@ -44,10 +43,8 @@ const BlogCraeteForm = () => {
             placeholder="author"
             onChange={(e) => setAuthor(e.target.value)}
           />
-        </div>
-        <div>
-          <label>url</label>
-          <input
+          <Form.Label>url</Form.Label>
+          <Form.Control className="mb-3"
             id="url"
             type="text"
             value={url}
@@ -55,11 +52,11 @@ const BlogCraeteForm = () => {
             placeholder="url"
             onChange={(e) => setUrl(e.target.value)}
           />
-        </div>
-        <button id="create" type="submit">
+        </Form.Group>
+        <Button className="mb-3" variant="success" id="create" type="submit">
           Create
-        </button>
-      </form>
+        </Button>
+      </Form>
     </Togglable>
 
   )

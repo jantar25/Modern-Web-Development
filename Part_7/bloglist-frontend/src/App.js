@@ -29,19 +29,22 @@ const App = () => {
   const { user } = useSelector(state => state)
 
   return (
-    <Router>
-      <div>
+    <div>
+      <Router>
         <Menu />
         <Notification />
         <Routes>
           <Route path="/" element={user? <Home /> : <Navigate replace to="/login" />} />
-          <Route path="/blogs/:id" element={<BlogsView />} />
-          <Route path="/users/:id" element={<UserView />} />
-          <Route path="/users" element={<Users />} />
           <Route path="/login" element={!user? <LoginForm /> : <Navigate replace to="/" />} />
+          {user &&
+          <>
+            <Route path="/blogs/:id" element={<BlogsView />} />
+            <Route path="/users/:id" element={<UserView />} />
+            <Route path="/users" element={<Users />} />
+          </>}
         </Routes>
-      </div>
-    </Router>
+      </Router>
+    </div>
   )
 }
 

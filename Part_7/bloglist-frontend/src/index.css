@@ -18,13 +18,6 @@
   margin-bottom: 10px;
 }
 
-.blog {
-  padding: 5px;
-  border: solid;
-  border-width: 1px;
-  margin-bottom: 5px;
-}
-
 .blogDeleteBtn {
   background: #00bfff;
   padding: 2px;
@@ -43,4 +36,26 @@
 .padding {
   margin-left: 2px;
   margin-right: 2px;
+  font-size: 20px;
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+}
+
+.loginForm {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.blog {
+  font-size: 20px;
+  color: rgb(21, 4, 49);
+  font-weight: 700;
+}
+
+.link {
+  text-decoration: none;
 }
