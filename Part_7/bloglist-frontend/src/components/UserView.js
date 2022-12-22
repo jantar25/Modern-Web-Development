@@ -6,15 +6,15 @@ const UserView = () => {
   const id = useParams().id
   const { users } = useSelector(state => state)
   const userToView = users.filter(user => user.id === id)
-  console.log(userToView)
+
   return (
-    <div>
+    <div className='container'>
       <h1>{userToView[0].name}</h1>
-      <h3>added blogs</h3>
-      <ul>{userToView[0].blogs.map((blog) =>
+      <h3 className='my-4'>added blogs</h3>
+      <ol>{userToView[0].blogs.map((blog) =>
         <li key={blog.id}>{blog.title}</li>
       )}
-      </ul>
+      </ol>
     </div>
   )
 }

@@ -51,6 +51,8 @@
 }
 
 .blog {
+  display: flex;
+  justify-content: space-between;
   font-size: 20px;
   color: rgb(21, 4, 49);
   font-weight: 700;

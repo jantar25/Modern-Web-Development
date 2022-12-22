@@ -1,6 +1,7 @@
 import React,{ useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { commentBlog } from '../reducers/blogReducer'
+import { Form,Button } from 'react-bootstrap'
 
 const BlogComments = ({ blog }) => {
   const dispatch = useDispatch()
@@ -13,16 +14,16 @@ const BlogComments = ({ blog }) => {
   }
 
   return (
-    <div>
+    <div className='container my-4'>
       <h3>Comments:</h3>
-      <form onSubmit={handleComment}>
-        <input
+      <Form onSubmit={handleComment} className="mb-4">
+        <Form.Control className="mb-1"
           value={comment}
           type='text'
           placeholder='comment'
           onChange={(e) => setComment(e.target.value)} />
-        <button type='submit'>add comment</button>
-      </form>
+        <Button type='submit'>add comment</Button>
+      </Form>
       <ul>
         {blog.comments.map((comment,index) =>
           <li key={index}>{comment}</li>

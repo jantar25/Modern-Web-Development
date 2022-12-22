@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { likeBlog,deleteBlog } from '../reducers/blogReducer'
 import BlogComments from './BlogComments'
+import { Button } from 'react-bootstrap'
 
 const BlogsView = () => {
   const id = useParams().id
@@ -11,14 +12,12 @@ const BlogsView = () => {
   const { blogs,user } = useSelector(state => state)
   const blogToView = blogs.find(blog => blog.id === id)
 
-  //DELETE A BLOG
   const handleDelete = async () => {
     if (window.confirm(`Remove blog ${blogToView.title} by ${blogToView.author}?`)) {
       dispatch(deleteBlog(blogToView.id))
     }
   }
 
-  //UPDATE BLOG
   const handleUpdate = async () => {
     const blogToUpdate = {
       user: blogToView.user.id,
@@ -30,24 +29,22 @@ const BlogsView = () => {
     dispatch(likeBlog(blogToView.id,blogToUpdate))
   }
   return (
-    <div>
+    <div className='container'>
       <h1>{blogToView.title} by {blogToView.author}</h1>
       <a href='#'>{blogToView.url}</a>
-      <div>
-        <span id="blogLike">likes {blogToView.likes}</span>
-        <button id="like" onClick={() => handleUpdate()}>
+      <div className='my-2'>
+        <span id="blogLike" className='mx-2'>likes {blogToView.likes}</span>
+        <Button id="like" onClick={() => handleUpdate()}>
             like
-        </button>
+        </Button>
       </div>
-      <div>Added by {blogToView.user.name}</div>
+      <div className='my-2'>Added by {blogToView.user.name}</div>
       {user.username === blogToView.user.username && (
-        <button
+        <Button
+          variant="danger"
           id="delete"
           onClick={() => handleDelete()}
-          className="blogDeleteBtn"
-        >
-              remove
-        </button>
+        >remove</Button>
       )}
       <BlogComments blog={blogToView} />
     </div>

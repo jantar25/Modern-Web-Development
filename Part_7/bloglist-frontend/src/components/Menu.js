@@ -21,7 +21,7 @@ const Menu = () => {
 
   return (
     <div className='menu'>
-      <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
+      <Navbar collapseOnSelect expand="md" bg="dark" variant="dark" className='px-4'>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">

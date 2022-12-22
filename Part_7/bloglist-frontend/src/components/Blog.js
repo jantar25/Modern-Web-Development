@@ -4,7 +4,8 @@ import PropTypes from 'prop-types'
 const Blog = ({ blog }) => {
   return (
     <div className="blog">
-      {blog.title} {blog.author}
+      <div>{blog.title}</div>
+      <div>{blog.author}</div>
     </div>
   )
 }

@@ -26,7 +26,7 @@ const BlogCraeteForm = () => {
       <Form onSubmit={handleCreate}>
         <Form.Group>
           <Form.Label>tittle</Form.Label>
-          <Form.Control className="mb-3"
+          <Form.Control className="mb-1"
             id="title"
             type="text"
             value={title}
@@ -35,7 +35,7 @@ const BlogCraeteForm = () => {
             onChange={(e) => setTitle(e.target.value)}
           />
           <Form.Label>author</Form.Label>
-          <Form.Control className="mb-3"
+          <Form.Control className="mb-1"
             id="author"
             type="text"
             value={author}
@@ -44,7 +44,7 @@ const BlogCraeteForm = () => {
             onChange={(e) => setAuthor(e.target.value)}
           />
           <Form.Label>url</Form.Label>
-          <Form.Control className="mb-3"
+          <Form.Control className="mb-1"
             id="url"
             type="text"
             value={url}
@@ -53,7 +53,7 @@ const BlogCraeteForm = () => {
             onChange={(e) => setUrl(e.target.value)}
           />
         </Form.Group>
-        <Button className="mb-3" variant="success" id="create" type="submit">
+        <Button className="mb-1" variant="success" id="create" type="submit">
           Create
         </Button>
       </Form>

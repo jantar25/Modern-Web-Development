@@ -17,7 +17,7 @@ export const { setNotification } = notificationReducer.actions
 
 let timeoutId = null
 const success = 'success'
-const failure = 'error'
+const failure = 'danger'
 export const makeFailureNotification = (content,delay) => {
   return dispatch => {
     dispatch(setNotification(failure.concat(' ',content)))
