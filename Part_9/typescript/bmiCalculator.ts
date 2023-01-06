@@ -1,5 +1,5 @@
 export const calculateBmi = (height : number,weight : number): string => {
-const result = weight/((height*0.01)**2)
+const result = weight/((height*0.01)**2);
 if (result < 18.5) {
     return 'underweight';
   } else if ( 18.5 <= result && result < 25) {
@@ -9,9 +9,9 @@ if (result < 18.5) {
   } else if ( result >= 30) {
     return 'obese';
   } else {
-    return 'Incorect values'
+    return 'Incorect values';
   }
-}
+};
 
 // const height = Number(process.argv[2])
 // const weight = Number(process.argv[3])
