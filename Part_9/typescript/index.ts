@@ -1,5 +1,6 @@
 import express = require('express');
 import { calculateBmi } from './bmiCalculator';
+import { calculateExercises } from './exerciseCalculator';
 const app = express();
 
 app.get('/hello', (_req, res) => {
@@ -18,6 +19,21 @@ app.get('/bmi', (req, res) => {
       height: height,
       bmi: calculateBmi(height,weight)
     });
+  }
+});
+
+app.post('/exercises ', (req, res) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { daily_exercises,target } = req.body;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+  const exerciseHour:number[] = daily_exercises.map(Number);
+  if(!daily_exercises && !target) {
+    res.status(400).send({ error: 'parameters missing'});
+  } else if (exerciseHour.some(isNaN) && isNaN(Number(target))) {
+    res.status(400).send({ error: 'malformatted parameters' });
+  } else{
+    const result = calculateExercises(exerciseHour,Number(target));
+    res.send({result});
   }
 });
 
