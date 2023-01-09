@@ -2,15 +2,15 @@ import diagnosesData from '../data/diagnoses';
 import { DiagnosesEntry } from '../types';
 
 
-const getEntries = ():Array<DiagnosesEntry> => {
+const getEntries = (): DiagnosesEntry[] => {
   return diagnosesData;
 };
 
-const addDiary = () => {
+const addDiagnose = () => {
   return null;
 };
 
 export default {
   getEntries,
-  addDiary
+  addDiagnose
 };
