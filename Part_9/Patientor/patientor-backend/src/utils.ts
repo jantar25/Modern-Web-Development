@@ -17,21 +17,21 @@ const isGender = (param: any): param is Gender => {
 
 const parseTextString = (textString: unknown): string => {
     if (!textString || !isString(textString)) {
-      throw new Error('Incorrect or missing comment');
+      throw new Error('Incorrect or missing value');
     }
     return textString;
   };
 
 const parseDateOfBirth = (dateOfBirth: unknown): string => {
     if (!dateOfBirth || !isString(dateOfBirth) || !isDate(dateOfBirth)) {
-        throw new Error('Incorrect or missing date: ' + dateOfBirth);
+        throw new Error('Incorrect or missing birthdate: ' + dateOfBirth);
     }
     return dateOfBirth;
   };
 
 const parseGender = (gender: unknown): Gender => {
     if (!gender || !isGender(gender)) {
-        throw new Error('Incorrect or missing weather: ' + gender);
+        throw new Error('Incorrect or missing gender: ' + gender);
     }
     return gender;
   };

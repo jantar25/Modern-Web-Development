@@ -6,7 +6,13 @@ const getEntries = (): PatientsEntry[] => {
     return patientsEntries;
   };
   
-  const getNonSensitiveEntries = (): NonSensitivePatientsEntry[] => {
+const getPatient = (id:string): PatientsEntry | string => {
+  const Patient = patientsEntries.find(patient => patient.id === id);
+  if(!Patient) return "there is not patient correcponding to that ID";
+  return {...Patient,entries:[]};
+};
+
+const getNonSensitiveEntries = (): NonSensitivePatientsEntry[] => {
     return patientsEntries.map(({id,name,dateOfBirth,gender,occupation}) => ({
         id,
         name,
@@ -20,6 +26,7 @@ const getEntries = (): PatientsEntry[] => {
       const newPatient = {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
         id: uuid(),
+        entries:[],
         ...entry
       };
       patientsEntries.push(newPatient);
@@ -29,5 +36,6 @@ const getEntries = (): PatientsEntry[] => {
   export default {
     getNonSensitiveEntries,
     getEntries,
+    getPatient,
     addPatient
   };

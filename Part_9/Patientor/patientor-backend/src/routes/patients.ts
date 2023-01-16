@@ -8,8 +8,23 @@ router.get('/', (_req, res) => {
   res.send(patientsServices.getNonSensitiveEntries());
 });
 
+router.get('/:id',(req,res) => {
+const id = req.params.id;
+try {
+  const Patient = patientsServices.getPatient(id);
+  res.json(Patient);
+} catch (error: unknown) {
+  let errorMessage = 'Something went wrong.';
+  if (error instanceof Error) {
+    errorMessage += ' Error: ' + error.message;
+  }
+  res.status(400).send(errorMessage);
+} 
+});
+
 router.post('/', (req, res) => {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const newPatientEntry = toNewPatientEntry(req.body);
     const addedPatient = patientsServices.addPatient(newPatientEntry);
 
