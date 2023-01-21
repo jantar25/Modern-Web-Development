@@ -29,6 +29,7 @@ const PatientPage = () => {
     }
     
 const patientInfo = Object.values(patient)[0];
+console.log(patientInfo);
   return (
     <div>
       {patientInfo && (
@@ -41,6 +42,18 @@ const patientInfo = Object.values(patient)[0];
         </h1>
         <div>ssn:{patientInfo.ssn}</div>
         <div>occupation:{patientInfo.occupation}</div>
+        <div>
+          <h3>Entries</h3>
+          <div>{patientInfo.entries.map(entry => (
+            <div key={entry.id}>
+              {entry.date} {entry.description}
+              <ul>
+              {entry.diagnosisCodes?.map((code,index) => 
+              <li key={index}>{code}</li>)}
+              </ul>
+            </div>
+          ))}</div>
+        </div>
       </>
     )}
     </div>
