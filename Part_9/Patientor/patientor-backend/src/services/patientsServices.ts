@@ -9,7 +9,7 @@ const getEntries = (): PatientsEntry[] => {
 const getPatient = (id:string): PatientsEntry | string => {
   const Patient = patientsEntries.find(patient => patient.id === id);
   if(!Patient) return "there is not patient correcponding to that ID";
-  return {...Patient,entries:[]};
+  return Patient;
 };
 
 const getNonSensitiveEntries = (): NonSensitivePatientsEntry[] => {
@@ -20,7 +20,7 @@ const getNonSensitiveEntries = (): NonSensitivePatientsEntry[] => {
         gender,
         occupation
     }));
-  };
+  }; 
 
   const addPatient = (entry:NewPatientEntry):PatientsEntry => {
       const newPatient = {

@@ -23,7 +23,7 @@ interface newIncludesDescrition extends CoursePartBase {
   }
 
 
-  interface CourseNormalPart extends newIncludesDescrition {
+  interface CourseNormalPart extends newIncludesDescrition { 
     type: "normal";
   }
   
