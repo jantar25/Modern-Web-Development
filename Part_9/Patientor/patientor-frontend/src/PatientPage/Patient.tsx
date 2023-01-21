@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from "axios";
 import { useParams } from 'react-router-dom';
-import { useStateValue } from '../state';
+import { useStateValue,setPatient } from '../state';
 import { apiBaseUrl } from '../constants';
 import { Patient } from '../types';
 import FemaleIcon from '@mui/icons-material/Female';
@@ -14,11 +14,11 @@ const PatientPage = () => {
 
   const fetchPatientInfo = async () => {
     try {
-        const { data } = await axios.get<Patient>(
+        const { data:patient } = await axios.get<Patient>(
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           `${apiBaseUrl}/patients/${id}`
         );
-        dispatch({ type: "SET_PATIENT", payload: data });
+        dispatch(setPatient(patient));
       } catch (e) {
         console.error(e);
       }
