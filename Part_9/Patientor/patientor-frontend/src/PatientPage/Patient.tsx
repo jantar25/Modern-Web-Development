@@ -10,8 +10,7 @@ import TransgenderIcon from '@mui/icons-material/Transgender';
 
 const PatientPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [{ patient }, dispatch] = useStateValue();
-
+  const [{ patient,diagnoses }, dispatch] = useStateValue();
   const fetchPatientInfo = async () => {
     try {
         const { data:patient } = await axios.get<Patient>(
@@ -29,7 +28,7 @@ const PatientPage = () => {
     }
     
 const patientInfo = Object.values(patient)[0];
-console.log(patientInfo);
+
   return (
     <div>
       {patientInfo && (
@@ -48,8 +47,11 @@ console.log(patientInfo);
             <div key={entry.id}>
               {entry.date} {entry.description}
               <ul>
-              {entry.diagnosisCodes?.map((code,index) => 
-              <li key={index}>{code}</li>)}
+              {entry.diagnosisCodes?.map((code,index) => {
+                const codeDiagnose = diagnoses.find(diagnose =>diagnose.code === code);
+                return (<li key={index}>{code} {codeDiagnose?.name}</li>);
+              }
+              )}
               </ul>
             </div>
           ))}</div>
