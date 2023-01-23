@@ -3,6 +3,7 @@ import HealthcareCase from './HealthcareCase';
 import HealthCheckCase from './HealthCheckCase';
 import { entryProps } from '../types';
 
+
 const Entries = ({entry}: entryProps) => {
 
     const switchEntries = () => {
@@ -25,9 +26,9 @@ const Entries = ({entry}: entryProps) => {
 
   return (
     <div >
-    <div>
-      {switchEntries()}
-    </div>
+      <div>
+        {switchEntries()}
+      </div>
   </div>
   );
 };

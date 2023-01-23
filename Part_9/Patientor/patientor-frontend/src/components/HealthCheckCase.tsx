@@ -1,11 +1,12 @@
 import React from 'react';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
+import { Box } from '@mui/material';
 import { HealthCheckProps } from '../types';
 
 const HealthCheckCase = ({entry}:HealthCheckProps) => {
   return (
-    <div key={entry.id}>
+    <Box border={1} borderRadius={1} sx={{ p: 1, my: 1 }}>
         <p>{entry.date} <MedicalServicesIcon /></p>
         <p>{entry.description}</p>
         <div><FavoriteOutlinedIcon color={
@@ -14,7 +15,7 @@ const HealthCheckCase = ({entry}:HealthCheckProps) => {
             entry.healthCheckRating === 2? 'warning' : 'error'} />
         </div>
         <p>diagnose by {entry.specialist}</p>
-    </div>
+    </Box>
   );
 };
 

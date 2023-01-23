@@ -1,11 +1,12 @@
 import React from 'react';
+import { Box } from '@mui/material';
 import { useStateValue } from '../state';
 import { HospitalProps } from '../types';
 
 const HospitalCase = ({entry}: HospitalProps) => {
     const [{ diagnoses }] = useStateValue();
   return (
-    <div>
+    <Box border={1} borderRadius={1} sx={{ p: 1, my: 1 }}>
         <p>{entry.date}</p>
         <p>{entry.description}</p>
         <ul>
@@ -16,7 +17,7 @@ const HospitalCase = ({entry}: HospitalProps) => {
             )}
         </ul>
         <p>diagnose by {entry.specialist}</p>
-    </div>
+    </Box>
   );
 };
 
