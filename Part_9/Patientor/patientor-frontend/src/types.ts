@@ -59,6 +59,22 @@ interface HospitalEntry  extends BaseEntry {
 
 export type Entry = HospitalEntry | OccupationalHealthcareEntry | HealthCheckEntry;
 
+export interface entryProps {
+  entry:Entry;
+}
+
+export interface HealthCheckProps {
+  entry:HealthCheckEntry;
+}
+
+export interface HospitalProps {
+  entry:HospitalEntry;
+}
+
+export interface HealthcareProps {
+  entry:OccupationalHealthcareEntry;
+}
+
 export interface Patient {
   id: string;
   name: string;
@@ -68,12 +84,3 @@ export interface Patient {
   occupation: string;
   entries: Entry[]
 }
-
-// export interface Patient {
-//   id: string;
-//   name: string;
-//   occupation: string;
-//   gender: Gender;
-//   ssn?: string;
-//   dateOfBirth?: string;
-// }

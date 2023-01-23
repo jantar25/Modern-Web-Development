@@ -1,16 +1,18 @@
 import React from 'react';
 import axios from "axios";
 import { useParams } from 'react-router-dom';
-import { useStateValue,setPatient } from '../state';
-import { apiBaseUrl } from '../constants';
-import { Patient } from '../types';
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import TransgenderIcon from '@mui/icons-material/Transgender';
+import Entries from '../components/Entries';
+import { useStateValue,setPatient } from '../state';
+import { apiBaseUrl } from '../constants';
+import { Patient } from '../types';
+
 
 const PatientPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [{ patient,diagnoses }, dispatch] = useStateValue();
+  const [{ patient }, dispatch] = useStateValue();
   const fetchPatientInfo = async () => {
     try {
         const { data:patient } = await axios.get<Patient>(
@@ -43,18 +45,10 @@ const patientInfo = Object.values(patient)[0];
         <div>occupation:{patientInfo.occupation}</div>
         <div>
           <h3>Entries</h3>
-          <div>{patientInfo.entries.map(entry => (
-            <div key={entry.id}>
-              {entry.date} {entry.description}
-              <ul>
-              {entry.diagnosisCodes?.map((code,index) => {
-                const codeDiagnose = diagnoses.find(diagnose =>diagnose.code === code);
-                return (<li key={index}>{code} {codeDiagnose?.name}</li>);
-              }
-              )}
-              </ul>
-            </div>
-          ))}</div>
+          <div>{patientInfo.entries.map(entry => 
+            <Entries key={entry.id} entry={entry} />
+            )}
+          </div>
         </div>
       </>
     )}
