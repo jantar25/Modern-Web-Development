@@ -23,15 +23,29 @@ const getNonSensitiveEntries = (): NonSensitivePatientsEntry[] => {
   }; 
 
   const addPatient = (entry:NewPatientEntry):PatientsEntry => {
-      const newPatient = {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-        id: uuid(),
-        entries:[],
-        ...entry
-      };
-      patientsEntries.push(newPatient);
-    return newPatient;
-  };
+    const newPatient = {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+      id: uuid(),
+      entries:[],
+      ...entry
+    };
+    patientsEntries.push(newPatient);
+  return newPatient;
+};
+
+
+  // const addEntry = (entry:newEntry,patientId:string):Entry => {
+  //   const Patient = (getPatient(patientId));
+  //   const existingEntries:Entry[] = Patient;
+  //     const newEntryItem = {
+  //       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+  //       id: uuid(),
+  //       ...entry
+  //     };
+  //     existingEntries.push(newEntryItem);
+  //   return newEntry;
+  // };
+
   
   export default {
     getNonSensitiveEntries,

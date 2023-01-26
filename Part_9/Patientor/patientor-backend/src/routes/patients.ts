@@ -1,6 +1,6 @@
 import express from 'express';
 import patientsServices from '../services/patientsServices';
-import toNewPatientEntry from '../utils';
+import {toNewPatientEntry,toNewEntry} from '../utils';
 
 const router = express.Router();
 
@@ -39,14 +39,13 @@ router.post('/', (req, res) => {
 });
 
 router.post('/:id/entries',(req,res) => {
-  const id = req.params.id;
-  console.log(id);
-  console.log(req.body);
+  const patientId = req.params.id;
   try {
-    const Patient = patientsServices.getPatient(id);
-    // const entry = Patient.entries.concat(req.body);
-    res.json(Patient);
-    // console.log(entry);
+    
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const entry = toNewEntry(req.body);
+    res.json(entry);
+    console.log(patientId);
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong.';
     if (error instanceof Error) {

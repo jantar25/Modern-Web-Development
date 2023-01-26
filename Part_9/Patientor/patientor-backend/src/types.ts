@@ -35,18 +35,18 @@ interface BaseEntry {
   diagnosisCodes?: Array<DiagnosesEntry['code']>;
 }
 
-interface HealthCheckEntry extends BaseEntry {
+export interface HealthCheckEntry extends BaseEntry {
   type: "HealthCheck";
   healthCheckRating: HealthCheckRating;
 }
 
-interface OccupationalHealthcareEntry extends BaseEntry {
+export interface OccupationalHealthcareEntry extends BaseEntry {
   type: "OccupationalHealthcare";
   employerName: string;
   sickLeave?: sickLeave;
 }
 
-interface HospitalEntry  extends BaseEntry {
+export interface HospitalEntry  extends BaseEntry {
   type: "Hospital";
   discharge: discharge;
 }
@@ -69,10 +69,24 @@ export type NewPatientEntry = Omit<PatientsEntry, 'id' | 'entries'>;
 
 export type PublicPatient = Omit<PatientsEntry, 'ssn'>;
 
+export type newEntry = Omit<Entry,'id'>;
+
 export type Fields = { 
   name: unknown, 
   dateOfBirth: unknown, 
   ssn: unknown, 
   gender: unknown, 
   occupation: unknown, 
+};
+
+export type newEntryFields = {  
+  description:unknown,
+  date:unknown,
+  specialist:unknown,
+  diagnosisCodes?:unknown[],
+  type:unknown,
+  employerName:unknown,
+  sickLeave?:unknown,
+  healthCheckRating:unknown,
+  discharge:unknown
 };
