@@ -34,12 +34,13 @@ const getNonSensitiveEntries = (): NonSensitivePatientsEntry[] => {
 };
 
 
-  const addEntry = (entry:Entry,patientId:string):Entry => {
-    const Patient = getPatient(patientId);
-    console.log(Patient);
-    console.log(entry);
-    // const existingEntries:Entry[] = Patient.entries;
-      // existingEntries.push(newEntryItem);
+  const addEntry = (entry:Entry,patientId:string):Entry|string => {
+    const Patient:PatientsEntry|string = getPatient(patientId);
+    if (typeof Patient === "string") {
+      return Patient;
+    }
+    const existingEntries = Patient.entries;
+    existingEntries.push(entry);
     return entry;
   };
 
