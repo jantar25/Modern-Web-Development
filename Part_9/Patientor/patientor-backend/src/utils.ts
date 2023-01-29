@@ -43,18 +43,18 @@ const parseGender = (gender: unknown): Gender => {
     return gender;
   };
 
-const checkDischarge = (discharge:{date:unknown,criteria:unknown}): discharge => {
-    if (!discharge || typeof Object.values(discharge) !== 'string') {
-        throw new Error('Incorrect or missing gender: ' + discharge);
+const checkDischarge = ({date,criteria}:{date:unknown,criteria:unknown}): discharge => {
+    if (!{date,criteria} || !isString(date) || !isString(criteria)) {
+        throw new Error('Incorrect or missing Discharge date and/or criteria: ' + {date,criteria});
     }
-    return discharge;
+    return {date,criteria};
   };
 
-  const checkSickLeave = (sickLeave:{startDate:unknown,endDate:unknown} | undefined): sickLeave => {
-    if (!sickLeave || typeof Object.values(sickLeave) !== 'string') {
-        throw new Error('Incorrect or missing gender: ' + sickLeave);
+  const checkSickLeave = ({startDate,endDate}:{startDate:unknown,endDate:unknown}): sickLeave => {
+    if (!{startDate,endDate} || !isString(endDate) || !isString(startDate)) {
+        throw new Error('Incorrect or missing sickleave startDate and/ or endDate: ' + startDate + endDate);
     }
-    return sickLeave;
+    return {endDate,startDate};
   };
 
 const parseHealthCheckRating = (healthCheckRating: unknown): HealthCheckRating => {
@@ -94,7 +94,11 @@ export const toNewEntry = ({
   sickLeave,
   healthCheckRating,
   discharge }:newEntryFields): Entry => {
-
+    const assertNever = (value: unknown): never => {
+      throw new Error(
+        `Unhandled discriminated union member: ${JSON.stringify(value)}`
+      );
+    };
   switch(type) {
     case "Hospital":
       return {
@@ -115,7 +119,7 @@ export const toNewEntry = ({
         specialist:parseTextString(specialist),
         diagnosisCodes:parseTextStringArray(diagnosisCodes),
         employerName: parseTextString(employerName),
-        sickLeave: checkSickLeave(sickLeave)
+        sickLeave: checkSickLeave(sickLeave as {startDate:unknown,endDate:unknown})
       };
     case "HealthCheck":
       return {
@@ -128,7 +132,7 @@ export const toNewEntry = ({
         healthCheckRating: parseHealthCheckRating(healthCheckRating)
       };
     default:
-    return 'Unhandled discriminated union member'; 
+    return assertNever(description); 
 }
 
 };
