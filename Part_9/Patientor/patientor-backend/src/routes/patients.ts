@@ -40,12 +40,11 @@ router.post('/', (req, res) => {
 
 router.post('/:id/entries',(req,res) => {
   const patientId = req.params.id;
-  try {
-    
+  try { 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const entry = toNewEntry(req.body);
-    res.json(entry);
-    console.log(patientId);
+    const newEntry = patientsServices.addEntry(entry,patientId);
+    res.json(newEntry);
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong.';
     if (error instanceof Error) {

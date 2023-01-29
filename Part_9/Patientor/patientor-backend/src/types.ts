@@ -1,9 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface sickLeave {
+export interface sickLeave {
   startDate: string;
   endDate: string;
 }
-interface discharge {
+export interface discharge {
   date:string;
   criteria:string;
 }
@@ -86,7 +86,13 @@ export type newEntryFields = {
   diagnosisCodes?:unknown[],
   type:unknown,
   employerName:unknown,
-  sickLeave?:unknown,
+  sickLeave?:{
+    startDate: unknown;
+    endDate: unknown;
+  },
   healthCheckRating:unknown,
-  discharge:unknown
+  discharge:{
+    date:unknown,
+    criteria:unknown,
+  }
 };

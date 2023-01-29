@@ -1,4 +1,5 @@
-import { NewPatientEntry,Gender,Fields,newEntryFields,HealthCheckRating } from "./types";
+import { NewPatientEntry,Gender,Fields,newEntryFields,HealthCheckRating,discharge,sickLeave,Entry } from "./types";
+import { v1 as uuid } from 'uuid';
 
 const isString = (text: unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
@@ -42,6 +43,20 @@ const parseGender = (gender: unknown): Gender => {
     return gender;
   };
 
+const checkDischarge = (discharge:{date:unknown,criteria:unknown}): discharge => {
+    if (!discharge || typeof Object.values(discharge) !== 'string') {
+        throw new Error('Incorrect or missing gender: ' + discharge);
+    }
+    return discharge;
+  };
+
+  const checkSickLeave = (sickLeave:{startDate:unknown,endDate:unknown} | undefined): sickLeave => {
+    if (!sickLeave || typeof Object.values(sickLeave) !== 'string') {
+        throw new Error('Incorrect or missing gender: ' + sickLeave);
+    }
+    return sickLeave;
+  };
+
 const parseHealthCheckRating = (healthCheckRating: unknown): HealthCheckRating => {
     if (!healthCheckRating || !isHealthCheckRating(healthCheckRating)) {
         throw new Error('Incorrect or missing HealthCheckRate: ' + healthCheckRating);
@@ -50,7 +65,7 @@ const parseHealthCheckRating = (healthCheckRating: unknown): HealthCheckRating =
   };
 
 const parseTextStringArray = (textString: unknown[] | undefined): string[] => {
-  if (textString?.length===0 || textString?.map(text=> !isString(text))) {
+  if (textString?.length === 0 || !textString?.every(i => typeof i === "string")) {
     throw new Error('Incorrect or missing value ');
   }
   return textString as string[];
@@ -78,30 +93,33 @@ export const toNewEntry = ({
   employerName,
   sickLeave,
   healthCheckRating,
-  discharge }:newEntryFields) => {
+  discharge }:newEntryFields): Entry => {
 
   switch(type) {
     case "Hospital":
       return {
+        id: uuid(),
         description:parseTextString(description),
         type: type,
         date:parseTextString(date),
         specialist:parseTextString(specialist),
-        diagnosisCodes:[parseTextString(diagnosisCodes)],
-        discharge:discharge
+        diagnosisCodes:parseTextStringArray(diagnosisCodes),
+        discharge:checkDischarge(discharge)
       };
     case "OccupationalHealthcare":
       return {
+        id: uuid(),
         description:parseTextString(description),
         type: type,
         date:parseTextString(date),
         specialist:parseTextString(specialist),
-        diagnosisCodes:[parseTextString(diagnosisCodes)],
-        employerName: employerName,
-        sickLeave: sickLeave
+        diagnosisCodes:parseTextStringArray(diagnosisCodes),
+        employerName: parseTextString(employerName),
+        sickLeave: checkSickLeave(sickLeave)
       };
     case "HealthCheck":
       return {
+        id: uuid(),
         description:parseTextString(description),
         type: type,
         date:parseTextString(date),
