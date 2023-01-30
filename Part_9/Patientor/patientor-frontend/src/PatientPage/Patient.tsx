@@ -9,10 +9,20 @@ import Entries from '../components/Entries';
 import { useStateValue,setPatient } from '../state';
 import { apiBaseUrl } from '../constants';
 import { Patient } from '../types';
+import AddEntryModal from '../AddEntryModal';
 
 
 const PatientPage = () => {
   const { id } = useParams<{ id: string }>();
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string>();
+
+  const openModal = (): void => setModalOpen(true);
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
   const [{ patient }, dispatch] = useStateValue();
   const fetchPatientInfo = async () => {
     try {
@@ -29,6 +39,9 @@ const PatientPage = () => {
     if(Object.keys(patient)[0] !== id) {
       void fetchPatientInfo();
     }
+  const submitNewEntry = () => {
+    console.log('submitted');
+  };
     
 const patientInfo = Object.values(patient)[0];
 
@@ -50,7 +63,15 @@ const patientInfo = Object.values(patient)[0];
             <Entries key={entry.id} entry={entry} />
             )}
           </div>
-          <Button variant="contained" color="primary">ADD NEW ENTRY</Button>
+          <AddEntryModal
+            modalOpen={modalOpen}
+            onSubmit={submitNewEntry}
+            error={error}
+            onClose={closeModal}
+          />
+          <Button variant="contained" color="primary" onClick={() => openModal()}>
+            ADD NEW ENTRY
+          </Button>
         </div>
       </>
     )}
