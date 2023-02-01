@@ -3,6 +3,8 @@ import { Field, Formik, Form } from "formik";
 import { Grid, Button } from "@material-ui/core";
 import { Entry } from '../types';
 import { TextField,SelectField,typeOption } from './FormFields';
+import { useStateValue } from '../state';
+import { DiagnosisSelection } from '../AddPatientModal/FormField';
 
 
 export type EntryFormValues = Omit<Entry, "id">;
@@ -26,6 +28,8 @@ const typeOptions: typeOption[] = [
   ];
 
 const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
+  const [{ diagnoses }] = useStateValue();
+
   return (
     <Formik
     initialValues={{
@@ -64,7 +68,7 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
         return errors;
       }}
       >
-        {({ isValid, dirty }) => {
+        {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return (
           <Form className="form ui">
             <SelectField label="Type" name="type" options={typeOptions} />
@@ -86,12 +90,17 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               name="date"
               component={TextField}
             />
-            <Field
+            <DiagnosisSelection
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+              diagnoses={Object.values(diagnoses)}
+            /> 
+            {/* <Field
               label="DiagnosisCodes"
               placeholder="503,609,..."
               name="diagnosisCodes"
               component={TextField}
-            />
+            /> */}
             {/* <SelectField label="HealthCheckRating" name="HealthCheckRating" options={healthCheckRatingOptions} /> */}
             <Grid>
               <Grid item>

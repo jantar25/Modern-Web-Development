@@ -63,11 +63,3 @@ export const SelectField = ({ name, label, options }: SelectFieldProps) => (
       </Typography>
     </div>
   );
-
-const FormFields = () => {
-  return (
-    <div>FormFields</div>
-  );
-};
-
-export default FormFields;

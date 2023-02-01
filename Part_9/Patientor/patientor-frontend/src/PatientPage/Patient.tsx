@@ -10,6 +10,7 @@ import { useStateValue,setPatient } from '../state';
 import { apiBaseUrl } from '../constants';
 import { Patient } from '../types';
 import AddEntryModal from '../AddEntryModal';
+import { EntryFormValues } from '../AddEntryModal/AddEntryForm';
 
 
 const PatientPage = () => {
@@ -39,8 +40,8 @@ const PatientPage = () => {
     if(Object.keys(patient)[0] !== id) {
       void fetchPatientInfo();
     }
-  const submitNewEntry = () => {
-    console.log('submitted');
+  const submitNewEntry = (values:EntryFormValues) => {
+   console.log(values);
   };
     
 const patientInfo = Object.values(patient)[0];
