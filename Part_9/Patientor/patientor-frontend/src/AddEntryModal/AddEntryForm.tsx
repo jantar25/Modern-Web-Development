@@ -1,13 +1,15 @@
 import React from 'react';
 import { Field, Formik, Form } from "formik";
 import { Grid, Button } from "@material-ui/core";
-import { Entry } from '../types';
-import { TextField,SelectField,typeOption } from './FormFields';
+import { OccupationalHealthcareEntry } from '../types';
+import { TextField,SelectField,typeOption} from './FormFields';
+// import {HealthCheckRating } from '../types'
+// import {SelectFieldHealthCheck,HealthCheckRatingOption } from './FormFields'
 import { useStateValue } from '../state';
-import { DiagnosisSelection } from '../AddPatientModal/FormField';
+import { DiagnosisSelection } from './FormFields';
 
 
-export type EntryFormValues = Omit<Entry, "id">;
+export type EntryFormValues = Omit<OccupationalHealthcareEntry, "id">;
 
 interface Props {
   onSubmit: (values: EntryFormValues) => void;
@@ -18,7 +20,7 @@ interface Props {
 //     { value: HealthCheckRating.LowRisk, label: "LowRisk" },
 //     { value: HealthCheckRating.Healthy, label: "Healthy" },
 //     { value: HealthCheckRating.HighRisk, label: "HighRisk" },
-//     { value: HealthCheckRating.CriticalRisk, label: "CriticalRisk" }
+//     { value: HealthCheckRating.CriticalRisk, label: "CriticalRisk" },
 //   ];
 
 const typeOptions: typeOption[] = [
@@ -29,41 +31,48 @@ const typeOptions: typeOption[] = [
 
 const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }] = useStateValue();
+  const initialData:EntryFormValues = {
+    type:'OccupationalHealthcare',
+    description: '',
+    date: '',
+    specialist: '',
+    diagnosisCodes: [],
+    // healthCheckRating: HealthCheckRating.Healthy,
+    employerName: '',
+    sickLeave: { 
+      startDate: '',
+      endDate: '',
+      },
+  //   discharge: {
+  //     date:'',
+  //     criteria:'',
+  //   },
+  };
 
   return (
     <Formik
-    initialValues={{
-      type:'HealthCheck',
-      description: '',
-      date: '',
-      specialist: '',
-      diagnosisCodes: [],
-    //   healthCheckRating: HealthCheckRating.Healthy,
-    //   employerName: '',
-    //   sickLeave: { 
-    //     startDate: '',
-    //     endDate: '',
-    //     },
-    //   discharge: {
-    //     date:'',
-    //     criteria:'',
-    //   },
-    }}
+    initialValues={initialData}
     onSubmit={onSubmit}
     validate={(values) => {
         const requiredError = "Field is required";
         const errors: { [field: string]: string } = {};
+        if (!values.type) {
+          errors.type = requiredError;
+        }
         if (!values.description) {
-          errors.name = requiredError;
+          errors.description = requiredError;
         }
         if (!values.date) {
-          errors.ssn = requiredError;
+          errors.date = requiredError;
         }
         if (!values.specialist) {
-          errors.dateOfBirth = requiredError;
+          errors.specialist = requiredError;
         }
-        if (!values.diagnosisCodes) {
-          errors.occupation = requiredError;
+        if (values.diagnosisCodes?.length === 0) {
+          errors.diagnosisCodes = requiredError;
+        }
+        if (!values.employerName) {
+          errors.employerName = requiredError;
         }
         return errors;
       }}
@@ -71,7 +80,10 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
         {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return (
           <Form className="form ui">
-            <SelectField label="Type" name="type" options={typeOptions} />
+            <SelectField
+              label="Type"
+              name="type"
+              options={typeOptions} />
             <Field
               label="Description"
               placeholder="description"
@@ -90,18 +102,33 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               name="date"
               component={TextField}
             />
+            <Field
+              label="Employer Name"
+              placeholder="employerName"
+              name="employerName"
+              component={TextField}
+            />
+            <Field
+              label="SickLeave Start"
+              placeholder="YYYY-MM-DD"
+              name='sickLeave.startDate'
+              component={TextField}
+            />
+            <Field
+              label="SickLeave End"
+              placeholder="YYYY-MM-DD"
+              name="sickLeave.endDate"
+              component={TextField}
+            />
             <DiagnosisSelection
               setFieldValue={setFieldValue}
               setFieldTouched={setFieldTouched}
               diagnoses={Object.values(diagnoses)}
             /> 
-            {/* <Field
-              label="DiagnosisCodes"
-              placeholder="503,609,..."
-              name="diagnosisCodes"
-              component={TextField}
-            /> */}
-            {/* <SelectField label="HealthCheckRating" name="HealthCheckRating" options={healthCheckRatingOptions} /> */}
+            {/* <SelectFieldHealthCheck 
+              label="HealthCheckRating"
+              name="HealthCheckRating"
+              options={healthCheckRatingOptions} /> */}
             <Grid>
               <Grid item>
                 <Button

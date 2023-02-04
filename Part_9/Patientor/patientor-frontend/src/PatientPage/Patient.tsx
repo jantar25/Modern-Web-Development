@@ -8,7 +8,7 @@ import { Button } from '@material-ui/core';
 import Entries from '../components/Entries';
 import { useStateValue,setPatient } from '../state';
 import { apiBaseUrl } from '../constants';
-import { Patient } from '../types';
+import { Patient,Entry } from '../types';
 import AddEntryModal from '../AddEntryModal';
 import { EntryFormValues } from '../AddEntryModal/AddEntryForm';
 
@@ -40,12 +40,30 @@ const PatientPage = () => {
     if(Object.keys(patient)[0] !== id) {
       void fetchPatientInfo();
     }
-  const submitNewEntry = (values:EntryFormValues) => {
-   console.log(values);
+
+  const patientInfo = Object.values(patient)[0];
+
+  const submitNewEntry = async (values:EntryFormValues) => {
+   try {
+    const { data: newEntry } = await axios.post<Entry>(
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      `${apiBaseUrl}/patients/${id}/entries`,
+      values
+    );
+    patientInfo.entries.concat(newEntry);
+    // dispatch({ type: "ADD_PATIENT", payload: newPatient });
+    closeModal();
+  } catch (error: unknown) {
+    let errorMessage = 'Something went wrong.';
+    if(axios.isAxiosError(error) && error.response) {
+      console.error(error.response.data);
+      errorMessage = error.response.data.error as string;
+    }
+    setError(errorMessage);
+  }
   };
     
-const patientInfo = Object.values(patient)[0];
-
+console.log(patientInfo.entries);
   return (
     <div>
       {patientInfo && (
