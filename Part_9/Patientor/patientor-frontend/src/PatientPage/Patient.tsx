@@ -6,7 +6,7 @@ import MaleIcon from '@mui/icons-material/Male';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 import { Button } from '@material-ui/core';
 import Entries from '../components/Entries';
-import { useStateValue,setPatient } from '../state';
+import { useStateValue,setPatient,addEntry } from '../state';
 import { apiBaseUrl } from '../constants';
 import { Patient,Entry } from '../types';
 import AddEntryModal from '../AddEntryModal';
@@ -50,8 +50,7 @@ const PatientPage = () => {
       `${apiBaseUrl}/patients/${id}/entries`,
       values
     );
-    patientInfo.entries.concat(newEntry);
-    // dispatch({ type: "ADD_PATIENT", payload: newPatient });
+    dispatch(addEntry(newEntry));
     closeModal();
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong.';
@@ -63,7 +62,6 @@ const PatientPage = () => {
   }
   };
     
-console.log(patientInfo.entries);
   return (
     <div>
       {patientInfo && (
