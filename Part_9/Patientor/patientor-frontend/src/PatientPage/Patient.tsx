@@ -25,6 +25,7 @@ const PatientPage = () => {
     setError(undefined);
   };
   const [{ patient }, dispatch] = useStateValue();
+
   const fetchPatientInfo = async () => {
     try {
         const { data:patient } = await axios.get<Patient>(
@@ -36,12 +37,6 @@ const PatientPage = () => {
         console.error(e);
       }
     };
-
-    if(Object.keys(patient)[0] !== id) {
-      void fetchPatientInfo();
-    }
-
-  const patientInfo = Object.values(patient)[0];
 
   const submitNewEntry = async (values:EntryFormValues) => {
    try {
@@ -61,6 +56,12 @@ const PatientPage = () => {
     setError(errorMessage);
   }
   };
+
+  if(Object.keys(patient)[0] !== id) {
+    void fetchPatientInfo();
+  }
+
+const patientInfo = Object.values(patient)[0];
     
   return (
     <div>

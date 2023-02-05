@@ -56,14 +56,18 @@ export const reducer = (state: State, action: Action): State => {
           ...state,
           diagnoses: action.payload
         };
-      // case "ADD_ENTRY":
-      //   return {
-      //     ...state,
-      //     patient: {
-      //       ...props,
-      //      entries:[action.payload,...rest]
-      //     }
-      //     };
+      case "ADD_ENTRY":
+        const patientInfo:Patient = Object.values(state.patient)[0];
+        const patientEntry:Entry[] = Object.values(state.patient)[0].entries;
+        return {
+          ...state,
+          patient: {
+            [patientInfo.id]:{
+              ...patientInfo,
+              entries: patientEntry.concat(action.payload)
+            }
+          }
+          };
     default:
       return state;
   }
