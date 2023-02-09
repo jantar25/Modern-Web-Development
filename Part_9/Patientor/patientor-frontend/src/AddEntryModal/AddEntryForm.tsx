@@ -1,18 +1,12 @@
 import React from 'react';
 import { Field, Formik, Form } from "formik";
 import { Grid, Button } from "@material-ui/core";
-import { OccupationalHealthcareEntry,HealthCheckEntry,HospitalEntry } from '../types';
 import { TextField,SelectField,typeOption} from './FormFields';
-import {HealthCheckRating } from '../types';
+import { EntryFormValues } from '../types';
 import {SelectFieldHealthCheck,HealthCheckRatingOption } from './FormFields';
 import { useStateValue } from '../state';
 import { DiagnosisSelection } from './FormFields';
 
-
-type healthCheckRatingType = Omit<OccupationalHealthcareEntry, "id">;
-type HealthCheckEntryType = Omit<HealthCheckEntry, "id">;
-type HospitalEntryType = Omit<HospitalEntry, "id">;
-export type EntryFormValues = healthCheckRatingType | HealthCheckEntryType| HospitalEntryType;
 
 interface Props {
   onSubmit: (values: EntryFormValues) => void;
@@ -20,10 +14,10 @@ interface Props {
 }
 
 const healthCheckRatingOptions: HealthCheckRatingOption[] = [
-    { value: HealthCheckRating.LowRisk, label: "LowRisk" },
-    { value: HealthCheckRating.Healthy, label: "Healthy" },
-    { value: HealthCheckRating.HighRisk, label: "HighRisk" },
-    { value: HealthCheckRating.CriticalRisk, label: "CriticalRisk" },
+    { value: 0, label: "Healthy" },
+    { value: 1, label: "Low risk" },
+    { value: 2, label: "High risk" },
+    { value: 3, label: "Critical risk" },
   ];
 
 const typeOptions: typeOption[] = [
@@ -34,44 +28,26 @@ const typeOptions: typeOption[] = [
 
 const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }] = useStateValue();
-  
-  const initialHealthcareData:EntryFormValues = {
-    type:'OccupationalHealthcare',
-    description: '',
-    date: '',
-    specialist: '',
-    diagnosisCodes: [],
-    employerName: '',
-    sickLeave: { 
-      startDate: '',
-      endDate: '',
-      },
-  };
-
-  // const initialHospitalData:EntryFormValues = {
-  //   type:'Hospital',
-  //   description: '',
-  //   date: '',
-  //   specialist: '',
-  //   diagnosisCodes: [],
-  //   discharge: {
-  //     date:'',
-  //     criteria:'',
-  //   },
-  // };
-
-  // const initialCheckRatingData:EntryFormValues = {
-  //   type:'HealthCheck',
-  //   description: '',
-  //   date: '',
-  //   specialist: '',
-  //   diagnosisCodes: [],
-  //   healthCheckRating: HealthCheckRating.Healthy,
-  // };
 
   return (
     <Formik
-    initialValues={initialHealthcareData}
+    initialValues={{
+      type:'OccupationalHealthcare',
+      description: '',
+      date: '',
+      specialist: '',
+      employerName: '',
+      sickLeave: { 
+        startDate: '',
+        endDate: '',
+        },
+      discharge: {
+        date:'',
+        criteria:'',
+        },
+        healthCheckRating: 0
+      }
+    }
     onSubmit={onSubmit}
     validate={(values) => {
         const requiredError = "Field is required";

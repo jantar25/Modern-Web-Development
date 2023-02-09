@@ -34,25 +34,25 @@ export interface DiagnosesEntry {
 
 
 interface BaseEntry {
-  id: string;
+  id?: string;
   description: string;
   date: string;
   specialist: string;
   diagnosisCodes?: Array<DiagnosesEntry['code']>;
 }
 
-export interface HealthCheckEntry extends BaseEntry {
+interface HealthCheckEntry extends BaseEntry {
   type: "HealthCheck";
   healthCheckRating: HealthCheckRating;
 }
 
-export interface OccupationalHealthcareEntry extends BaseEntry {
+interface OccupationalHealthcareEntry extends BaseEntry {
   type: "OccupationalHealthcare";
   employerName: string;
   sickLeave?: sickLeave;
 }
 
-export interface HospitalEntry  extends BaseEntry {
+interface HospitalEntry  extends BaseEntry {
   type: "Hospital";
   discharge: discharge;
 }
@@ -83,4 +83,18 @@ export interface Patient {
   gender: Gender;
   occupation: string;
   entries: Entry[]
+}
+
+export interface EntryFormValues extends BaseEntry {
+  type: string;
+  discharge?: {
+    date: string;
+    criteria: string;
+  },
+  employerName?: string;
+  sickLeave?: {
+    startDate: string;
+    endDate: string;
+  }
+  healthCheckRating?: HealthCheckRating;
 }

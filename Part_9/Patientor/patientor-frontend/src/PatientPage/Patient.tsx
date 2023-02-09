@@ -10,7 +10,7 @@ import { useStateValue,setPatient,addEntry } from '../state';
 import { apiBaseUrl } from '../constants';
 import { Patient,Entry } from '../types';
 import AddEntryModal from '../AddEntryModal';
-import { EntryFormValues } from '../AddEntryModal/AddEntryForm';
+import { EntryFormValues } from '../types';
 
 
 const PatientPage = () => {
