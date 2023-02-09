@@ -74,7 +74,6 @@ interface NumberProps extends FieldProps {
 
 export const NumberField = ({ field, label, min, max }: NumberProps) => {
   const [value, setValue] = useState<number>();
-
   return (
     <div style={{ marginBottom: "1em" }}>
       <TextFieldMUI

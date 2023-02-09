@@ -8,11 +8,11 @@ import {
     Typography,
     InputLabel
   } from "@material-ui/core";
-import { HealthCheckRating,Diagnosis } from '../types';
+import { Diagnosis } from '../types';
 import Input from '@material-ui/core/Input';
 
 export type HealthCheckRatingOption = {
-    value: HealthCheckRating;
+    value: number;
     label: string;
   };
 
@@ -20,40 +20,17 @@ export type typeOption = {
     value: string;
     label: string;
   };
+
   type SelectFieldProps = {
     name: string;
     label: string;
-    options: typeOption[];
+    options: typeOption[] | HealthCheckRatingOption[];
   };
 
-  type SelectFieldHealthCheckProps = {
-    name: string;
-    label: string;
-    options: HealthCheckRatingOption[];
-  };
 
 const FormikSelect = ({ field, ...props }: FieldProps) => <Select {...field} {...props} />;
 
 export const SelectField = ({ name, label, options }: SelectFieldProps) => (
-    <>
-      <InputLabel>{label}</InputLabel>
-      <Field
-        fullWidth
-        style={{ marginBottom: "0.5em" }}
-        label={label}
-        component={FormikSelect}
-        name={name}
-      >
-        {options.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label || option.value}
-          </MenuItem>
-        ))}
-      </Field>
-    </>
-  );
-
-  export const SelectFieldHealthCheck = ({ name, label, options }: SelectFieldHealthCheckProps) => (
     <>
       <InputLabel>{label}</InputLabel>
       <Field

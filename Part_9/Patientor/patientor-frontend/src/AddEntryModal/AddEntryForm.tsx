@@ -1,11 +1,15 @@
 import React from 'react';
 import { Field, Formik, Form } from "formik";
 import { Grid, Button } from "@material-ui/core";
-import { TextField,SelectField,typeOption} from './FormFields';
+import { 
+  DiagnosisSelection,
+  HealthCheckRatingOption,
+  TextField,
+  SelectField,
+  typeOption
+} from './FormFields';
 import { EntryFormValues } from '../types';
-import {SelectFieldHealthCheck,HealthCheckRatingOption } from './FormFields';
 import { useStateValue } from '../state';
-import { DiagnosisSelection } from './FormFields';
 
 
 interface Props {
@@ -67,9 +71,6 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
         if (values.diagnosisCodes?.length === 0) {
           errors.diagnosisCodes = requiredError;
         }
-        if (!values.employerName) {
-          errors.employerName = requiredError;
-        }
         return errors;
       }}
       >
@@ -124,7 +125,7 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               component={TextField}
             />
             </> : values.type === 'HealthCheck' ?
-            <SelectFieldHealthCheck 
+            <SelectField 
             label="HealthCheckRating"
             name="HealthCheckRating"
             options={healthCheckRatingOptions} />

@@ -39,6 +39,7 @@ const PatientPage = () => {
     };
 
   const submitNewEntry = async (values:EntryFormValues) => {
+    console.log(values);
    try {
     const { data: newEntry } = await axios.post<Entry>(
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
