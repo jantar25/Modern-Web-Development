@@ -118,6 +118,7 @@ export const SelectField = ({ name, label, options }: SelectFieldProps) => (
       <FormControl style={{ width: 552, marginBottom: '30px' }}>
         <InputLabel>Diagnoses</InputLabel>
         <Select multiple value={selectedDiagnoses} onChange={(e) => onChange(e.target.value as string[])} input={<Input />}>
+          <option value="">--- Select ---</option>
           {stateOptions.map((option) => (
             <MenuItem key={option.key} value={option.value}>
               {option.text}
