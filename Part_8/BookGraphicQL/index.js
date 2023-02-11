@@ -111,6 +111,11 @@ let authors = [
       author: String! 
       genres: [String!]!
     ): Book
+
+    editAuthor(
+      name: String!
+      setBornTo: Int!
+    ): Author
   }
 `
 
@@ -145,6 +150,16 @@ const resolvers = {
       authors = authors.concat({name:args.author, id: uuid()})
       books = books.concat(book)
       return book
+    },
+
+    editAuthor: (root, args) => {
+      const author = authors.find(author => author.name === args.name)
+      if (!author) {
+        return null
+      }
+      const updatedAuthor = { ...author, born: args.setBornTo }
+      authors = authors.map(author => author.name === args.name ? updatedAuthor : author)
+      return updatedAuthor
     }
   }
 }
