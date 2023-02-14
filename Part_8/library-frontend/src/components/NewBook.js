@@ -17,16 +17,14 @@ const NewBook = () => {
   const [ addBook ] = useMutation(ADD_BOOK, {
     refetchQueries: [ { query: ALL_BOOKS },{ query: ALL_AUTHORS } ],
     onError: (error) => {
-      const errors = error.graphQLErrors[0].extensions.error.errors
-      const messages = Object.values(errors).map(e => e.message).join('\n')
-      console.log(errors)
-      setErrorMessage(messages)
+      const errorCode = error.graphQLErrors[0].extensions.code
+      setErrorMessage(errorCode)
       setTimeout(() => {
         setErrorMessage(null)
       }, 10000)
     }
   })
-  console.log(errorMessage)
+
   const submit = async (event) => {
     event.preventDefault()
     addBook({  variables: { title,author,publishedInt,genres} })

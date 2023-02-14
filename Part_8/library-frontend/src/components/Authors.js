@@ -4,11 +4,11 @@ import { ALL_AUTHORS,EDIT_AUTHOR } from './Queries'
 
 
 const Authors = () => {
-  const authors = useQuery(ALL_AUTHORS)
   const [name,setName] = useState('')
   const [born,setBorn] = useState('')
   const bornInt = parseInt(born)
-
+  
+  const authors = useQuery(ALL_AUTHORS)
   const [ editAuthor ] = useMutation(EDIT_AUTHOR)
 
   const updateAuthor = (e) => {
