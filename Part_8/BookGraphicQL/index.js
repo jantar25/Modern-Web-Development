@@ -1,8 +1,12 @@
+const mongoose = require('mongoose')
+mongoose.set('strictQuery', false)
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
 const { v1: uuid } = require('uuid')
+require('dotenv').config()
 
-
+const Book = require('./Models/Book')
+const MONGODB_URI = process.env.MONGODB_URI
 let authors = [
     {
       name: 'Robert Martin',
@@ -80,6 +84,14 @@ let authors = [
       genres: ['classic', 'revolution']
     },
   ]
+
+  mongoose.connect(MONGODB_URI)
+  .then(() => {
+    console.log('connected to MongoDB')
+  })
+  .catch((error) => {
+    console.log('error connection to MongoDB:', error.message)
+  })
 
   const typeDefs = `
   type Book {
