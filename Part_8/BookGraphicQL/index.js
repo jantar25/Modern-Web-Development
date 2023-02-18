@@ -2,10 +2,10 @@ const mongoose = require('mongoose')
 mongoose.set('strictQuery', false)
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
-const { v1: uuid } = require('uuid')
+const Book = require('./Models/Book')
+const Author = require('./Models/Author')
 require('dotenv').config()
 
-const Book = require('./Models/Book')
 const MONGODB_URI = process.env.MONGODB_URI
 let authors = [
     {
@@ -98,7 +98,7 @@ let authors = [
     id: ID!
     title: String!
     published: Int!
-    author: String! 
+    author: Author! 
     genres: [String!]!
   }
 
@@ -135,8 +135,7 @@ const resolvers = {
   Query: {
     bookCount: () => books.length,
     authorCount: () => authors.length,
-    allBooks: (root, args) =>
-      args.author&&args.genre? books
+    allBooks: (root, args) => args.author&&args.genre? books
       .filter(book => book.author === args.author)
       .filter(book => book.genres.includes(args.genre))
       : args.author? books.filter(book => book.author === args.author) 
@@ -152,16 +151,21 @@ const resolvers = {
   },
 
   Mutation: {
-    addBook: (root, args) => {
-      const book = { ...args, id: uuid() }
-      if (authors.find(author => author.name === args.author)) {
-        books = books.concat(book)
-        return book
-          }
+    addBook: async (root, args) => {
+      const existingAuthor = await Author.findOne({ name: args.author })
 
-      authors = authors.concat({name:args.author, id: uuid()})
-      books = books.concat(book)
-      return book
+      if (!existingAuthor) {
+        const newAuthor = new Author({ name: args.author })
+        const savedAuthor = await newAuthor.save()
+        const book = new Book({...args,author:savedAuthor.id})
+        let savedBook = await book.save()
+        savedBook = await savedBook.populate('author', { name: 1, id: 1 })
+        return savedBook
+      }
+      const book = new Book({...args,author:existingAuthor.id})
+      let savedBook = await book.save()
+      savedBook = await savedBook.populate('author', { name: 1, id: 1 })
+      return savedBook
     },
 
     editAuthor: (root, args) => {
