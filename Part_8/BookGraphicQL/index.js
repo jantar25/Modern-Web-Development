@@ -108,16 +108,36 @@ const resolvers = {
       const existingAuthor = await Author.findOne({ name: args.author })
 
       if (!existingAuthor) {
-        const newAuthor = new Author({ name: args.author })
-        const savedAuthor = await newAuthor.save()
-        const book = new Book({...args,author:savedAuthor.id})
-        let savedBook = await book.save()
-        savedBook = await savedBook.populate('author', { name: 1, id:1, born:1 })
+        try {
+          const newAuthor = new Author({ name: args.author })
+          const savedAuthor = await newAuthor.save()
+          const book = new Book({...args,author:savedAuthor.id})
+          let savedBook = await book.save()
+          savedBook = await savedBook.populate('author', { name: 1, id:1, born:1 })
+        } catch (error) {
+          throw new GraphQLError('Saving Book failed', {
+            extensions: {
+              code: 'BAD_USER_INPUT',
+              invalidArgs: args.title,
+              error
+            }
+          })
+        }
         return savedBook
       }
-      const book = new Book({...args,author:existingAuthor.id})
-      let savedBook = await book.save()
-      savedBook = await savedBook.populate('author', { name: 1, id:1, born:1  })
+      try {
+        const book = new Book({...args,author:existingAuthor.id})
+        let savedBook = await book.save()
+        savedBook = await savedBook.populate('author', { name: 1, id:1, born:1  })
+      } catch (error) {
+        throw new GraphQLError('Saving Book failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.title,
+            error
+          }
+        })
+      }
       return savedBook
     },
 
@@ -127,7 +147,17 @@ const resolvers = {
         return null
       }
       author.born = args.setBornTo 
-      updatedAuthor = await author.save()
+      try {
+        updatedAuthor = await author.save()
+      } catch (error) {
+        throw new GraphQLError('Saving Born date failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.setBornTo,
+            error
+          }
+        })
+      }
       return updatedAuthor
     }
   }
