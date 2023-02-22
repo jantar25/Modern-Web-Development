@@ -31,6 +31,7 @@ const MONGODB_URI = process.env.MONGODB_URI
     id: ID!
     name: String!
     born: Int
+    bookCount:Int
   }
 
   type User {
@@ -116,18 +117,22 @@ const resolvers = {
       }
     },
 
-    allAuthors: async() => await Author.find({}),
+    allAuthors: async() => {
+      const authors = await Author.find({})
+    //   const books = await Book.find({}).populate('author', { name: 1, id:1, born:1 })
+    //   const test = authors.map(author => ({
+    //   ...author,
+    //   bookCount:(books.filter(book =>
+    //     book.author.name === author.name).length
+    //     )
+    //   })
+    // )
+
+    return authors
+    },
     me: (root, args, context) => {
       return context.currentUser
     }
-    
-    // authors.map(author => ({
-    //   ...author,
-    //   bookCount:(books.filter(book =>
-    //     book.author === author.name).length
-    //     )
-    //   })
-    // ),
   },
 
   Mutation: {

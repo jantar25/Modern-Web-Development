@@ -6,7 +6,13 @@ query {
     id
     title
     published
-    author
+    author {
+      id
+      name
+      born
+      bookCount
+    }
+    genres
   }
 }
 `
