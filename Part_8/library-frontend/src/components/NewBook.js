@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useMutation } from '@apollo/client'
+import { useNavigate } from "react-router-dom";
 import { ALL_BOOKS,ADD_BOOK,ALL_AUTHORS } from './Queries'
 import Notification from './Notification'
 
 
 
 const NewBook = () => {
+  const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState(null)
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -34,6 +36,7 @@ const NewBook = () => {
     setAuthor('')
     setGenres([])
     setGenre('')
+    navigate("/books")
   }
 
   const addGenre = () => {
