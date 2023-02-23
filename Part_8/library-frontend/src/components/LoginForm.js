@@ -21,9 +21,11 @@ const LoginForm = ({ setToken }) => {
 
       useEffect(() => {
         if ( result.data ) {
-          const token = result.data.login.value
+          const token = result.data.login.token
+          const favouriteGenre = result.data.login.favouriteGenre
           setToken(token)
-          localStorage.setItem('userToken', token)
+          localStorage.setItem('userToken',token )
+          localStorage.setItem('userfavorite',favouriteGenre )
           navigate("/")
         }
       }, [result.data]) // eslint-disable-line

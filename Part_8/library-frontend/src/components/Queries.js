@@ -66,7 +66,10 @@ mutation UpdateAuthor($name: String!, $bornInt: Int!) {
 export const LOGIN = gql`
 mutation login($username: String!, $password: String!) {
   login(username: $username, password: $password)  {
-    value
+    username
+    favouriteGenre
+    id
+    token
   }
 }
 `

@@ -40,8 +40,11 @@ const MONGODB_URI = process.env.MONGODB_URI
     id: ID!
   }
 
-  type Token {
-    value: String!
+  type userToken {
+    username: String!
+    favouriteGenre: String!
+    id: ID!
+    token: String!
   }
 
   type Query {
@@ -73,7 +76,7 @@ const MONGODB_URI = process.env.MONGODB_URI
     login(
       username: String!
       password: String!
-    ): Token
+    ): userToken
 
   }
 `
@@ -119,16 +122,18 @@ const resolvers = {
 
     allAuthors: async() => {
       const authors = await Author.find({})
-    //   const books = await Book.find({}).populate('author', { name: 1, id:1, born:1 })
-    //   const test = authors.map(author => ({
-    //   ...author,
-    //   bookCount:(books.filter(book =>
-    //     book.author.name === author.name).length
-    //     )
-    //   })
-    // )
+      const books = await Book.find({}).populate('author', { name: 1, id:1, born:1 })
+      const fullAuthor = authors.map(author => ({
+      name:author.name,
+      id:author.id,
+      born:author.born,
+      bookCount:(books.filter(book =>
+        book.author.name === author.name).length
+        )
+      })
+    )
 
-    return authors
+    return fullAuthor
     },
     me: (root, args, context) => {
       return context.currentUser
@@ -238,7 +243,14 @@ const resolvers = {
         id: user._id,
       }
   
-      return { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
+      const userInfo = { 
+        username: user.username,
+        favouriteGenre: user.favouriteGenre,
+        id: user._id,
+        token: jwt.sign(userForToken, process.env.JWT_SECRET) 
+      }
+
+      return userInfo
     },
   }
 }
