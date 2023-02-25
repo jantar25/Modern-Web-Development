@@ -1,4 +1,6 @@
 const { GraphQLError } = require('graphql')
+const { PubSub } = require('graphql-subscriptions')
+const pubsub = new PubSub()
 const jwt = require('jsonwebtoken')
 const Book = require('./Models/Book')
 const Author = require('./Models/Author')
@@ -80,6 +82,8 @@ const resolvers = {
             const book = new Book({...args,author:savedAuthor.id})
             let savedBook = await book.save()
             savedBook = await savedBook.populate('author', { name: 1, id:1, born:1 })
+
+            pubsub.publish('BOOK_ADDED', { bookAdded: savedBook })
             return savedBook
           } catch (error) {
             throw new GraphQLError('Saving Book failed', {
@@ -95,6 +99,8 @@ const resolvers = {
           const book = new Book({...args,author:existingAuthor.id})
           let savedBook = await book.save()
           savedBook = await savedBook.populate('author', { name: 1, id:1, born:1  })
+
+          pubsub.publish('BOOK_ADDED', { bookAdded: savedBook })
           return savedBook
         } catch (error) {
           throw new GraphQLError('Saving Book failed', {
@@ -167,15 +173,17 @@ const resolvers = {
         }
     
         const userInfo = { 
-          username: user.username,
-          favouriteGenre: user.favouriteGenre,
-          id: user._id,
           token: jwt.sign(userForToken, process.env.JWT_SECRET) 
         }
   
         return userInfo
       },
-    }
+    },
+    Subscription: {
+      bookAdded: {
+        subscribe: () => pubsub.asyncIterator('BOOK_ADDED')
+      },
+    },
   }
 
   module.exports = resolvers

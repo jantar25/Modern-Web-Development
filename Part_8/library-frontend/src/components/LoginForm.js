@@ -11,7 +11,7 @@ const LoginForm = ({ setToken }) => {
     const navigate = useNavigate();
     const [ login, result ] = useMutation(LOGIN, {
         onError: (error) => {
-            const errorCode = error.graphQLErrors[0].extensions.code
+            const errorCode = error.graphQLErrors[0].message
             setErrorMessage(errorCode)
             setTimeout(() => {
               setErrorMessage(null)
@@ -22,10 +22,8 @@ const LoginForm = ({ setToken }) => {
       useEffect(() => {
         if ( result.data ) {
           const token = result.data.login.token
-          const favouriteGenre = result.data.login.favouriteGenre
           setToken(token)
           localStorage.setItem('userToken',token )
-          localStorage.setItem('userfavorite',favouriteGenre )
           navigate("/")
         }
       }, [result.data]) // eslint-disable-line

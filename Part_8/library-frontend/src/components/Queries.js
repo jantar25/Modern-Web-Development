@@ -28,6 +28,16 @@ query {
 }
 `
 
+export const USER = gql`
+query {
+  me{
+    username
+    favouriteGenre
+    id
+  }
+}
+`
+
 export const ADD_BOOK = gql`
 mutation createBook($title: String!, $author: String!, $publishedInt: Int!, $genres: [String!]!) {
   addBook(
@@ -66,9 +76,6 @@ mutation UpdateAuthor($name: String!, $bornInt: Int!) {
 export const LOGIN = gql`
 mutation login($username: String!, $password: String!) {
   login(username: $username, password: $password)  {
-    username
-    favouriteGenre
-    id
     token
   }
 }

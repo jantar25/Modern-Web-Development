@@ -20,10 +20,7 @@ const typeDefs = `
     id: ID!
   }
 
-  type userToken {
-    username: String!
-    favouriteGenre: String!
-    id: ID!
+  type Token {
     token: String!
   }
 
@@ -56,8 +53,10 @@ const typeDefs = `
     login(
       username: String!
       password: String!
-    ): userToken
-
+    ): Token
+  }
+  type Subscription {
+    bookAdded: Book!
   }
 `
 
