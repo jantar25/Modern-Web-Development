@@ -3,16 +3,44 @@ import {
   BrowserRouter as Router,
   Routes, Route, Link 
 } from 'react-router-dom'
-import { useApolloClient } from '@apollo/client'
+import { useApolloClient,useSubscription } from '@apollo/client'
+import { BOOK_ADDED,ALL_BOOKS } from './components/Queries'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Recommenation from './components/Recommenation'
 
+// export const updateCache = (cache, query, addedBook) => {
+//   // helper that is used to eliminate saving same person twice
+//   const uniqByName = (a) => {
+//     let seen = new Set()
+//     return a.filter((item) => {
+//       let k = item.name
+//       return seen.has(k) ? false : seen.add(k)
+//     })
+//   }
+
+//   cache.updateQuery(query, ({ allBooks }) => {
+//     return {
+//       allBooks: uniqByName(allBooks.concat(addedBook)),
+//     }
+//   })
+// }
+
 const App = () => {
   const [token, setToken] = useState(null)
   const client = useApolloClient()
+
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data, client }) => {
+      const addedBook = data.data.bookAdded
+      console.log(addedBook)
+      alert(`${addedBook.title} added`)
+      // updateCache(client.cache, { query: ALL_BOOKS }, addedBook)
+    }
+  })
 
   const logOut = () => {
     setToken(null)
