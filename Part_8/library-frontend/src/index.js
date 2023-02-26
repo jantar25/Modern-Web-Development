@@ -44,8 +44,8 @@ import { createClient } from 'graphql-ws'
   )
 
   const client = new ApolloClient({
-    link: splitLink,
     cache: new InMemoryCache(),
+    link: splitLink,
   })
 
 ReactDOM.createRoot(document.getElementById('root')).render(

@@ -1,14 +1,14 @@
 import React,{useState} from 'react'
-import { useQuery,useMutation } from '@apollo/client'
-import { ALL_AUTHORS,EDIT_AUTHOR } from './Queries'
+import { useMutation } from '@apollo/client'
+import { EDIT_AUTHOR } from './Queries'
 
 
-const Authors = ({token}) => {
+const Authors = ({token,authors}) => {
   const [name,setName] = useState('')
   const [born,setBorn] = useState('')
   const bornInt = parseInt(born)
   
-  const authors = useQuery(ALL_AUTHORS)
+  
   const [ editAuthor ] = useMutation(EDIT_AUTHOR)
 
   const updateAuthor = (e) => {
@@ -17,10 +17,6 @@ const Authors = ({token}) => {
 
     setName('')
     setBorn('')
-  }
-
-  if (authors.loading) {
-    return <div>loading...</div>
   }
 
   return (

@@ -1,15 +1,9 @@
 import { useState } from 'react'
-import { useQuery } from '@apollo/client'
-import { ALL_BOOKS } from './Queries'
 
 
-const Books = () => {
-  const books = useQuery(ALL_BOOKS)
+const Books = ({books}) => {
+  
   const [filteredBooks,setFilteredBooks] = useState()
-
-  if (books.loading) {
-    return <div>loading...</div>
-  }
 
   const genres = [...new Set(
     books.data.allBooks.reduce((newGenres,book) => newGenres.concat(book.genres), [])
